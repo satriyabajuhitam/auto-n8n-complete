@@ -132,11 +132,11 @@ parse_arguments() {
                 shift
                 ;;
             *)
-                error "Invalid parameter: $1"
+                error "Tham số không hợp lệ: $1"
                 show_help
                 exit 1
                 ;;
-        es-ac
+        esac
     done
 }
 
@@ -2614,6 +2614,7 @@ main() {
 # Run main function
 main "$@"
 EOF
+
 
 
 
