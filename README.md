@@ -654,7 +654,7 @@ systemctl status cron                           # Cron jobs
 ### 💬 Get Support
 
   - **🐛 Issues**: [GitHub Issues](https://github.com/satriyabajuhitam/auto-n8n-complete/issues)
-  - **🎥 YouTube**: [Kalvin Thien Social](https://www.youtube.com/@satriyabajuhitamsocial) - **SUBSCRIBE TO SUPPORT\!**
+  - **🎥 YouTube**: [Satriya Baju Hitam](https://www.youtube.com/@satriyabajuhitamsocial) - **SUBSCRIBE TO SUPPORT\!**
   - **📱 Whatsapp**: 628123456789
 
 ### 🔧 Contributing
