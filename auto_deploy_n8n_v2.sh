@@ -1,14 +1,14 @@
 #!/bin/bash
 
 # =============================================================================
-# 🚀 AUTOMATED N8N INSTALLATION SCRIPT 2025 - PRODUCTION READY V2.2
+# 🚀 AUTOMATED N8N INSTALLATION SCRIPT 2025 - PRODUCTION READY V2
 # =============================================================================
 # Updated: 21/08/2025
 #
 # ✨ IMPROVEMENTS:
-#   - ✅ FINAL FIX: Rewrote docker-compose generation to prevent all YAML syntax errors.
-#   - ✅ Added PostgreSQL as a database option for production scalability.
-#   - ✅ Intelligent service dependency (waits for database to be healthy).
+#   - ✅ FINAL FIX: Restored missing function calls for Dockerfile and Caddyfile creation.
+#   - ✅ Fixed all previously identified YAML syntax errors.
+#   - ✅ Added PostgreSQL as a database option with intelligent service dependency.
 #   - ✅ Robust Backup/Restore system for both SQLite and PostgreSQL.
 
 # =============================================================================
@@ -61,7 +61,7 @@ info() { echo -e "${BLUE}[INFO] $1${NC}"; }
 success() { echo -e "${GREEN}[SUCCESS] $1${NC}"; }
 
 # =============================================================================
-# USER INPUT FUNCTIONS
+# USER INPUT & CONFIGURATION
 # =============================================================================
 
 get_domain_input() {
@@ -119,7 +119,7 @@ cleanup_old_installation() {
 
 install_docker() {
     if command -v docker &>/dev/null; then info "Docker is already installed"; else
-        log "📦 Installing Docker..."; apt-get update; apt-get install -y ca-certificates curl; install -m 0755 -d /etc/apt/keyrings; curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc; chmod a+r /etc/apt/keyrings/docker.asc; echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | tee /etc/apt/sources.list.d/docker.list >/dev/null; apt-get update; apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin; success "Docker installed.";
+        log "📦 Installing Docker..."; apt-get update -y; apt-get install -y ca-certificates curl; install -m 0755 -d /etc/apt/keyrings; curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc; chmod a+r /etc/apt/keyrings/docker.asc; echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | tee /etc/apt/sources.list.d/docker.list >/dev/null; apt-get update -y; apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin; success "Docker installed.";
     fi
     systemctl start docker; systemctl enable docker;
 }
@@ -151,6 +151,39 @@ EOF
 
     chmod 600 "$INSTALL_DIR/.env"
     success ".env file created and secured."
+}
+
+create_dockerfile() {
+    log "🐳 Creating Dockerfile for N8N..."
+    
+    cat > "$INSTALL_DIR/Dockerfile" << 'EOF'
+FROM n8nio/n8n:latest
+
+USER root
+
+RUN apk update && apk add --no-cache ffmpeg python3 python3-dev py3-pip build-base linux-headers && \
+    pip3 install --no-cache-dir --break-system-packages yt-dlp && \
+    rm -rf /var/cache/apk/*
+
+USER node
+EOF
+    success "Dockerfile created."
+}
+
+create_caddyfile() {
+    if [[ "$LOCAL_MODE" == "true" ]]; then return 0; fi
+    log "🌐 Creating Caddyfile..."
+    
+    cat > "$INSTALL_DIR/Caddyfile" << EOF
+{
+    email admin@${DOMAIN}
+}
+
+${DOMAIN} {
+    reverse_proxy n8n:5678
+}
+EOF
+    success "Caddyfile created."
 }
 
 # =============================================================================
@@ -214,6 +247,7 @@ EOF
     # --- Caddy Service ---
     if [[ "$LOCAL_MODE" != "true" ]]; then
         cat >> "$DOCKER_COMPOSE_FILE" <<EOF
+
   caddy:
     image: caddy:latest
     container_name: caddy-proxy
@@ -236,6 +270,7 @@ EOF
     # --- PostgreSQL Service ---
     if [[ "$USE_POSTGRES" == "true" ]]; then
         cat >> "$DOCKER_COMPOSE_FILE" <<EOF
+
   postgres:
     image: postgres:15-alpine
     container_name: postgres-container
@@ -288,7 +323,7 @@ echo "   Docker: $(docker --version)"
 echo "   Docker Compose: $(docker compose version 2>/dev/null || echo 'v1')"
 echo "---"
 echo "📍 2. Database Mode:"
-if grep -q "POSTGRES_USER" "/home/n8n/.env"; then
+if grep -q "POSTGRES_USER" "/home/n8n/.env" 2>/dev/null; then
     echo "   DB Type: PostgreSQL"
     echo "   DB Status: $(docker inspect --format='{{.State.Health.Status}}' postgres-container 2>/dev/null || echo 'Not Running')"
 else
@@ -318,10 +353,9 @@ build_and_deploy() {
     chown -R 1000:1000 "$INSTALL_DIR/files/"
     
     log "🚀 Starting all services..."
-    docker compose up -d --build --force-recreate
+    docker compose up -d --build --force-recreate --remove-orphans
     
     log "⏳ Waiting for services to become healthy..."
-    # A simple sleep for now, a more robust health check loop can be added back if needed
     sleep 30 
 
     success "🎉 All services started successfully!"
@@ -342,17 +376,23 @@ show_final_summary() {
 
 main() {
     show_banner
-    # Simplified flow for debugging
+    
     get_domain_input
     get_database_config
+    
     cleanup_old_installation
     install_docker
     create_project_structure
     setup_env_file
+    
+    create_dockerfile
+    create_caddyfile
     create_docker_compose
-    # create_caddyfile would go here in a full script
+    
     create_troubleshooting_script
+    
     build_and_deploy
+    
     show_final_summary
 }
 
