@@ -47,13 +47,13 @@ This script automatically installs **N8N Workflow Automation** with a full suite
 ### 1️⃣ One-Command Installation (Recommended)
 
 ```bash
-cd /tmp && curl -sSL [https://raw.githubusercontent.com/satriyabajuhitam/auto-n8n-complete/main/auto_deploy_n8n.sh](https://raw.githubusercontent.com/satriyabajuhitam/auto-n8n-complete/main/auto_deploy_n8n.sh) | tr -d '\r' > deploy_n8n.sh && chmod +x deploy_n8n.sh && sudo bash deploy_n8n.sh
+cd /tmp && curl -sSL https://raw.githubusercontent.com/satriyabajuhitam/auto-n8n-complete/main/auto_deploy_n8n.sh | tr -d '\r' > deploy_n8n.sh && chmod +x deploy_n8n.sh && sudo bash deploy_n8n.sh
 ````
 
 ### 2️⃣ Or Download & Run
 
 ```bash
-wget [https://raw.githubusercontent.com/satriyabajuhitam/auto-n8n-complete/main/auto_deploy_n8n.sh](https://raw.githubusercontent.com/satriyabajuhitam/auto-n8n-complete/main/auto_deploy_n8n.sh)
+wget https://raw.githubusercontent.com/satriyabajuhitam/auto-n8n-complete/main/auto_deploy_n8n.sh
 chmod +x auto_deploy_n8n.sh
 sudo ./auto_deploy_n8n.sh
 ```
