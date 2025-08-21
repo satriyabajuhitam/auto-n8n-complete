@@ -29,6 +29,22 @@ This script automatically installs **N8N Workflow Automation** with a full suite
 - **🗂️ Automatic Cleanup** of old backups locally and on Google Drive.
 - **🔧 Integrated Restore** feature allows you to restore from a backup during installation.
 
+## 🐘 Which Database Should You Choose: PostgreSQL vs. SQLite
+
+This script gives you a choice between two powerful databases. Here’s a simple guide to help you decide.
+
+**In short: If you're unsure, choose PostgreSQL.** The script automates the setup for you.
+
+| Criteria | SQLite (Personal Notebook) 📝 | PostgreSQL (Public Library) 🐘 |
+| :--- | :--- | :--- |
+| **Best Use Case** | Personal use, hobbies, testing, or servers with very limited resources (e.g., 1GB RAM). | **Production, business, teams,** or if you plan to run many workflows concurrently. |
+| **Performance** | Very fast for single operations, but can slow down when many workflows run at the same time. | **Superior** for handling many concurrent workflows and complex queries (e.g., viewing execution history). |
+| **Scalability** | Limited. Not ideal if your number of workflows and execution data grows very large. | **Excellent**. Designed to handle large databases and high workloads. The right choice for the long term. |
+| **Resource Usage**| **Very light**. Adds almost no extra RAM/CPU usage. | **Higher**. Runs a separate container that will use some of your server's RAM & CPU (but it's worth the performance). |
+| **Data Reliability** | Quite reliable, but more susceptible to file corruption in case of a server crash. | **Very reliable**. Has advanced mechanisms to ensure data integrity, even during system failures. |
+
+**Recommendation:** For a server with **2 CPUs and 4GB of RAM**, **PostgreSQL is a much stronger foundation**. It will provide a faster and more stable experience as your number of workflows grows.
+
 ## 🖥️ Supported Environments
 
 ✅ **Ubuntu VPS/Server** (Recommended)
@@ -49,31 +65,15 @@ This script automatically installs **N8N Workflow Automation** with a full suite
 ### 1️⃣ One-Command Installation (Recommended)
 
 ```bash
-cd /tmp && curl -sSL https://raw.githubusercontent.com/satriyabajuhitam/auto-n8n-complete/main/auto_deploy_n8n_v2.sh | tr -d '\r' > deploy_n8n_v2.sh && chmod +x deploy_n8n_v2.sh && sudo bash deploy_n8n_v2.sh
+cd /tmp && curl -sSL [https://raw.githubusercontent.com/satriyabajuhitam/auto-n8n-complete/main/auto_deploy_n8n.sh](https://raw.githubusercontent.com/satriyabajuhitam/auto-n8n-complete/main/auto_deploy_n8n.sh) | tr -d '\r' > deploy_n8n.sh && chmod +x deploy_n8n.sh && sudo bash deploy_n8n.sh
 ````
 
 ### 2️⃣ Or Download & Run
 
 ```bash
-wget https://raw.githubusercontent.com/satriyabajuhitam/auto-n8n-complete/main/auto_deploy_n8n_v2.sh
-chmod +x auto_deploy_n8n_v2.sh
-sudo ./auto_deploy_n8n_v2.sh
-```
-
-### 3️⃣ Advanced Options
-
-```bash
-# Clean install (deletes any previous installation)
-sudo ./auto_deploy_n8n_v2.sh --clean
-
-# Specify a custom installation directory
-sudo ./auto_deploy_n8n_v2.sh -d /custom/path
-
-# Skip Docker installation (if you already have it)
-sudo ./auto_deploy_n8n_v2.sh -s
-
-# See all available options
-./auto_deploy_n8n_v2.sh --help
+wget [https://raw.githubusercontent.com/satriyabajuhitam/auto-n8n-complete/main/auto_deploy_n8n.sh](https://raw.githubusercontent.com/satriyabajuhitam/auto-n8n-complete/main/auto_deploy_n8n.sh)
+chmod +x auto_deploy_n8n.sh
+sudo ./auto_deploy_n8n.sh
 ```
 
 ## 🔧 Interactive Installation Process
@@ -103,52 +103,18 @@ The script provides a guided setup:
 ```bash
 # Run a manual backup
 /home/n8n/backup-workflows.sh
-
-# Run a manual test with system info
-/home/n8n/backup-manual.sh
-
-# View backup logs
-tail -f /home/n8n/logs/backup.log
 ```
 
 ### 📦 Backup File Content
 
 The content of the backup file depends on the database you chose during installation:
 
-**If using SQLite:**
-
-```
-credentials/
-├── database.sqlite          # N8N SQLite database file
-└── ...
-config/
-├── .env
-└── ...
-```
-
-**If using PostgreSQL:**
-
-```
-credentials/
-├── database.sql             # N8N PostgreSQL database dump
-└── ...
-config/
-├── .env
-└── ...
-```
+**If using SQLite:** a `database.sqlite` file is included.
+**If using PostgreSQL:** a `database.sql` dump file is included.
 
 ### 🔧 Restore From a Backup
 
-The easiest way to restore your data is by using the script's integrated restore feature during a fresh installation.
-
-1.  Run the installation script:
-    ```bash
-    sudo ./auto_deploy_n8n.sh
-    ```
-2.  When asked **"Do you want to restore data from an existing backup?"**, answer `y`.
-3.  Follow the on-screen prompts to select your backup source.
-
-The script will automatically detect whether the backup is for SQLite or PostgreSQL and handle the restoration process accordingly.
+The easiest way to restore your data is by using the script's integrated restore feature during a fresh installation. The script will automatically detect whether the backup is for SQLite or PostgreSQL and handle the restoration process accordingly.
 
 ## 🛠️ System Management
 
@@ -186,8 +152,6 @@ The script includes a powerful diagnostic tool to help you quickly identify issu
 /home/n8n/troubleshoot.sh
 ```
 
-This tool checks your system info, container status (including the database), network ports, SSL certificates, file permissions, and recent error logs.
-
 ## 📂 Full Directory Structure
 
 ```
@@ -217,7 +181,7 @@ This tool checks your system info, container status (including the database), ne
 
   - **🐛 Issues**: [GitHub Issues](https://github.com/satriyabajuhitam/auto-n8n-complete/issues)
   - **🎥 YouTube**: [Satriya Baju Hitam](https://www.youtube.com/@satriyabajuhitam) - **SUBSCRIBE TO SUPPORT\!**
-  - **📱 Whatsapp**: 628123456789
+  - **📱 Whatsapp**: +628123456789
 
 ### 📝 Bug Reports
 
