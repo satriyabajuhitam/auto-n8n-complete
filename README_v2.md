@@ -65,13 +65,13 @@ This script gives you a choice between two powerful databases. Here’s a simple
 ### 1️⃣ One-Command Installation (Recommended)
 
 ```bash
-cd /tmp && curl -sSL https://raw.githubusercontent.com/satriyabajuhitam/auto-n8n-complete_v2/main/auto_deploy_n8n_v2.sh | tr -d '\r' > deploy_n8n_v2.sh && chmod +x deploy_n8n_v2.sh && sudo bash deploy_n8n_v2.sh
+cd /tmp && curl -sSL https://raw.githubusercontent.com/satriyabajuhitam/auto-n8n-complete/main/auto_deploy_n8n_v2.sh | tr -d '\r' > deploy_n8n_v2.sh && chmod +x deploy_n8n_v2.sh && sudo bash deploy_n8n_v2.sh
 ````
 
 ### 2️⃣ Or Download & Run
 
 ```bash
-wget https://raw.githubusercontent.com/satriyabajuhitam/auto-n8n-complete_v2/main/auto_deploy_n8n_v2.sh
+wget https://raw.githubusercontent.com/satriyabajuhitam/auto-n8n-complete/main/auto_deploy_n8n_v2.sh
 chmod +x auto_deploy_n8n_v2.sh
 sudo ./auto_deploy_n8n_v2.sh
 ```
