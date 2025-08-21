@@ -1,76 +1,65 @@
-# 🚀 Automated N8N Installation Script with FFmpeg, yt-dlp, Puppeteer, and News API
+# 🚀 Automated N8N Installation Script
 
+This script automatically installs **N8N Workflow Automation** with a full suite of extended features for 2025, including:
 
-This script automatically installs **N8N Workflow Automation** with full extended features for 2025, including:
-
-  - **🤖 N8N** with FFmpeg, yt-dlp, Puppeteer
-  - **📰 News Content API** (FastAPI + Newspaper4k)
-  - **📱 Daily Automatic Telegram Backup**
-  - **🔒 Automatic SSL Certificate** with Caddy
-  - **💾 Smart Backup System** with compression
-  - **🔄 Auto-Update** with options
+  - **🤖 N8N Core** with FFmpeg and yt-dlp integrated.
+  - **📰 News Content API** (FastAPI + Newspaper4k) for advanced content scraping.
+  - **☁️ Google Drive & 📱 Telegram Backup** for secure, automated data protection.
+  - **🔒 Automatic SSL Certificate** provisioned by Caddy.
+  - **💾 Smart Restore System** integrated into the script.
+  - **🔄 Auto-Update** functionality to keep your instance current.
 
 ## ✨ Outstanding Features 2025
 
 ### 🔧 N8N Core Features
 
-  - **🤖 N8N** with all automation features
-  - **🎬 FFmpeg** - Professional video/audio processing
-  - **📺 yt-dlp** - Download YouTube/TikTok/Facebook videos
-  - **🌐 Puppeteer + Chromium** - Browser automation
-  - **🔒 Automatic SSL** with Caddy reverse proxy
-  - **📁 Volume mapping** for file persistence
-  - **⚡ Swap memory** automatically adjusted by RAM
+  - **🤖 N8N** with all its powerful automation capabilities.
+  - **🎬 FFmpeg** - For professional video and audio processing directly in your workflows.
+  - **📺 yt-dlp** - To download videos from YouTube, TikTok, Facebook, and more.
+  - **🔒 Automatic SSL** with Caddy reverse proxy for secure connections.
+  - **📁 Persistent Storage** using Docker volumes to ensure your data is safe.
+  - **⚡ Smart Swap Memory** which is automatically configured based on your server's RAM.
 
 ### 📰 News Content API (HOT Feature 2025\!)
 
 > **NEW FEATURE 2025\!** 🎉
 
-  - **🚀 FastAPI** with the latest **Newspaper4k**
-  - **🔐 Customizable Bearer Token Authentication** for security
-  - **🌐 Dedicated Subdomain**: `api.yourdomain.com`
-  - **📱 Responsive UI** with 2025 design
-  - **📚 Interactive Documentation** (Swagger + ReDoc)
-  - **🌍 Multi-language support** (Vietnamese, English, Chinese, Japanese...)
+  - **🚀 Built with FastAPI** and the latest **Newspaper4k** library.
+  - **🔐 Secured with Bearer Token Authentication**, configured via a `.env` file.
+  - **🌐 Dedicated Subdomain** for easy access: `api.yourdomain.com`.
+  - **📱 Responsive UI** with a modern 2025 design.
+  - **📚 Interactive API Documentation** via Swagger and ReDoc.
+  - **🌍 Multi-language support** including Vietnamese, English, Chinese, Japanese, and more.
 
 **API Endpoints:**
 
-  - `GET /health` - Check API status
-  - `POST /extract-article` - Get article content from URL
-  - `POST /extract-source` - Crawl multiple articles from a website
-  - `POST /parse-feed` - Analyze RSS feeds
+  - `GET /health` - Check API status.
+  - `POST /extract-article` - Get full article content from a URL.
+  - `POST /extract-source` - Crawl multiple articles from a source website.
+  - `POST /parse-feed` - Analyze and parse RSS feeds.
 
-### 📱 Telegram Backup System (HOT Feature\!)
+### ☁️ Smart Backup & Restore System
 
-  - **🔄 Automatic backup** of workflows & credentials every day at 2:00 AM
-  - **📱 Sends backup file** via Telegram Bot (if \<20MB)
-  - **📊 Real-time notifications** about backup status
-  - **🗂️ Automatically keeps the 30 most recent backups**
-  - **🧪 Manual backup test** to check functionality
-
-### 💾 Smart Backup System
-
-  - **📋 Export workflows** from N8N database
-  - **🔐 Backup credentials** & encryption keys
-  - **📦 Compression** with tar.gz
-  - **📊 Metadata tracking** (version, size, date)
-  - **🧹 Auto cleanup** of old backups
-  - **📋 Detailed logging** of all activities
+  - **🔄 Automatic Daily Backups** of workflows, credentials, and configuration at 2:00 AM.
+  - **📱 Telegram Notifications** to inform you of backup status in real-time.
+  - **☁️ Google Drive Uploads** for secure, off-site backup storage.
+  - **🗂️ Automatic Cleanup** of old backups locally and on Google Drive.
+  - **🔧 Integrated Restore** feature allows you to restore from a backup during installation.
 
 ## 🖥️ Supported Environments
 
 ✅ **Ubuntu VPS/Server** (Recommended)
 ✅ **Ubuntu on Windows WSL2**
 ✅ **Ubuntu Docker Environment**
-✅ **Auto-detect** and handle the environment
+✅ **Auto-detection** of the operating environment.
 
 ## 📋 System Requirements
 
-  - **OS**: Ubuntu 20.04+ (VPS or WSL)
-  - **RAM**: Minimum 2GB (4GB+ recommended)
-  - **Storage**: 20GB+ free space
-  - **Network**: Domain already pointed to the server IP
-  - **Access**: Root/sudo permissions
+  - **OS**: Ubuntu 20.04 or newer.
+  - **RAM**: Minimum 2GB (4GB+ recommended for better performance).
+  - **Storage**: 20GB+ of free disk space.
+  - **Network**: A domain name pointed to your server's IP address.
+  - **Access**: Root or sudo permissions.
 
 ## 🚀 Super Fast Installation
 
@@ -88,65 +77,51 @@ chmod +x auto_deploy_n8n.sh
 sudo ./auto_deploy_n8n.sh
 ```
 
-### 3️⃣ Clean Installation (Deletes all previous installations)
+### 3️⃣ Advanced Options
 
 ```bash
+# Clean install (deletes any previous installation)
 sudo ./auto_deploy_n8n.sh --clean
-```
 
-### 4️⃣ Advanced Options
-
-```bash
-# Specify installation directory
+# Specify a custom installation directory
 sudo ./auto_deploy_n8n.sh -d /custom/path
 
-# Skip Docker installation (if already installed)
+# Skip Docker installation (if you already have it)
 sudo ./auto_deploy_n8n.sh -s
 
-# See full help
-./auto_deploy_n8n.sh -h
+# See all available options
+./auto_deploy_n8n.sh --help
 ```
 
 ## 🔧 Interactive Installation Process
 
-The script will guide you through each step:
+The script provides a guided setup:
 
-1.  **🔄 Setup Swap** - Automatically calculates and sets up suitable swap memory
-2.  **🌐 Enter Domain** - Main domain for N8N
-3.  **🗑️ Cleanup Option** - Option to delete old installations (if any)
-4.  **📰 News API Setup** - Do you want to install the News Content API?
-5.  **🔐 Bearer Token** - Set a secure Bearer Token password
-6.  **📱 Telegram Config** - Do you want to back up via Telegram?
-7.  **🔄 Auto-Update** - Do you want automatic updates?
-8.  **✅ DNS Verification** - Checks if the domain is correctly pointed
-9.  **🐳 Docker Installation** - Installs Docker & dependencies
-10. **🏗️ Build & Deploy** - Builds images and starts containers
-11. **🔒 SSL Setup** - Automatically issues SSL certificate
+1.  **🔄 Data Restore Option** - Choose to restore from a backup at the start.
+2.  **🌐 Domain Input** - Provide your main domain for N8N.
+3.  **🗑️ Cleanup Option** - Decide whether to remove any old installations.
+4.  **📰 News API Setup** - Enable or disable the News Content API.
+5.  **🔐 Bearer Token** - Set a secure password for the API.
+6.  **☁️ Backup Configuration** - Set up Telegram and Google Drive backups.
+7.  **🔄 Auto-Update** - Enable or disable automatic updates.
+8.  **✅ DNS Verification** - The script confirms your domain is pointed correctly.
+9.  **🐳 Docker Installation** - Installs Docker and all required dependencies.
+10. **🏗️ Build & Deploy** - Builds the custom Docker images and starts the services.
+11. **🔒 SSL Setup** - Automatically issues a free SSL certificate.
 
-## 📰 News Content API - SUPER HOT FEATURE 2025\!
-
-### 🎯 Introduction
-
-The News Content API is built with **FastAPI** and the latest **Newspaper4k** version, helping you to:
-
-  - **📰 Scrape content** from any website
-  - **📡 Parse RSS feeds** to get the latest news
-  - **🔍 Search** and analyze content automatically
-  - **🤖 Integrate** directly into N8N workflows
+## 📰 News Content API - Usage Guide
 
 ### 🔑 Authentication
 
-All API calls require a **custom Bearer Token**:
+All API calls require a **Bearer Token** in the authorization header. This token is stored securely in the `.env` file in your installation directory.
 
-```bash
-Authorization: Bearer YOUR_CUSTOM_TOKEN_HERE
 ```
-
-> **🔐 Security:** The script will ask you to set your own Bearer Token (at least 20 characters) to ensure maximum security\!
+Authorization: Bearer YOUR_TOKEN_FROM_.ENV_FILE
+```
 
 ### 📖 API Documentation
 
-After installation, access:
+After installation, you can access the interactive documentation:
 
   - **🏠 Homepage**: `https://api.yourdomain.com/`
   - **📚 Swagger UI**: `https://api.yourdomain.com/docs`
@@ -154,551 +129,176 @@ After installation, access:
 
 ### 💻 Example Usage with cURL
 
-**1. 🩺 Check API:**
-
 ```bash
-curl -X GET "https://api.yourdomain.com/health" \
-     -H "Authorization: Bearer YOUR_CUSTOM_TOKEN"
-```
-
-**2. 📰 Get article content:**
-
-```bash
+# Get article content
 curl -X POST "https://api.yourdomain.com/extract-article" \
      -H "Content-Type: application/json" \
-     -H "Authorization: Bearer YOUR_CUSTOM_TOKEN" \
+     -H "Authorization: Bearer YOUR_TOKEN" \
      -d '{
        "url": "https://dantri.com.vn/the-gioi.htm",
-       "language": "vi",
-       "extract_images": true,
-       "summarize": true
-     }'
-```
-
-**3. 🌐 Crawl multiple articles from a website:**
-
-```bash
-curl -X POST "https://api.yourdomain.com/extract-source" \
-     -H "Content-Type: application/json" \
-     -H "Authorization: Bearer YOUR_CUSTOM_TOKEN" \
-     -d '{
-       "url": "https://dantri.com.vn",
-       "max_articles": 10,
        "language": "vi"
      }'
 ```
 
-**4. 📡 Parse RSS Feed:**
+### 🔧 Change Bearer Token
 
-```bash
-curl -X POST "https://api.yourdomain.com/parse-feed" \
-     -H "Content-Type: application/json" \
-     -H "Authorization: Bearer YOUR_CUSTOM_TOKEN" \
-     -d '{
-       "url": "https://dantri.com.vn/rss.xml",
-       "max_articles": 10
-     }'
-```
+To change the API token, edit the `.env` file and restart the service.
 
-### 🔧 Change Bearer Token {\#change-token}
+1.  **Edit the `.env` file:**
 
-**Method 1: Via Docker Environment**
+    ```bash
+    nano /home/n8n/.env
+    ```
 
-```bash
-cd /home/n8n
-sed -i 's/NEWS_API_TOKEN=.*/NEWS_API_TOKEN=NEW_TOKEN_HERE/' docker-compose.yml
-docker-compose restart fastapi
-```
+2.  Find the line `NEWS_API_TOKEN="..."` and replace the value. Save the file.
 
-**Method 2: Direct Edit**
+3.  **Restart the API service:**
 
-```bash
-nano /home/n8n/docker-compose.yml
-# Find the line NEWS_API_TOKEN and change it
-docker-compose restart fastapi
-```
-
-**Method 3: One-liner command**
-
-```bash
-cd /home/n8n && sed -i 's/NEWS_API_TOKEN=.*/NEWS_API_TOKEN="YOUR_NEW_TOKEN"/' docker-compose.yml && docker-compose restart fastapi
-```
-
-### 🤖 Usage in N8N Workflows
-
-**1. Create an HTTP Request Node:**
-
-  - **Method**: POST
-  - **URL**: `https://api.yourdomain.com/extract-article`
-  - **Authentication**: Header Auth
-      - **Name**: `Authorization`
-      - **Value**: `Bearer YOUR_CUSTOM_TOKEN`
-
-**2. Request Body:**
-
-```json
-{
-  "url": "{{ $json.article_url }}",
-  "language": "vi",
-  "extract_images": true,
-  "summarize": false
-}
-```
-
-**3. The Response will contain:**
-
-```json
-{
-  "title": "Article Title",
-  "content": "Full content...",
-  "summary": "Article summary",
-  "authors": ["Author"],
-  "publish_date": "2024-12-27T10:00:00Z",
-  "images": ["url1.jpg", "url2.jpg"],
-  "word_count": 500,
-  "read_time_minutes": 3
-}
-```
-
-## 📱 Telegram Backup System
-
-### 🔧 Telegram Bot Configuration
-
-**1. 🤖 Create Bot:**
-
-  - Open Telegram, find **@BotFather**
-  - Send command: `/newbot`
-  - Set a name and username for the bot
-  - **Copy the received Bot Token**
-
-**2. 🆔 Get Chat ID:**
-
-**For individuals:**
-
-  - Find **@userinfobot** on Telegram
-  - Send `/start` to get your **User ID**
-
-**For groups:**
-
-  - Add the bot to the group
-  - Send a message in the group
-  - Access: `https://api.telegram.org/bot<BOT_TOKEN>/getUpdates`
-  - **The group Chat ID** starts with a minus sign (-)
-
-### 📱 Test Telegram Integration
-
-```bash
-# Test sending a message
-curl -X POST "https://api.telegram.org/bot<BOT_TOKEN>/sendMessage" \
-     -d chat_id="<CHAT_ID>" \
-     -d text="Test message from N8N backup system!"
-```
-
-### 🔄 Backup Features
-
-  - **⏰ Automatic**: Every day at 2:00 AM
-  - **📱 Notifications**: Real-time via Telegram
-  - **📦 File Transfer**: Automatically sends the backup file (if \<20MB)
-  - **📊 Statistics**: Number of workflows, size, time
-  - **🗂️ Retention**: Keeps the 30 most recent backups
+    ```bash
+    cd /home/n8n && docker compose restart fastapi
+    ```
 
 ## 💾 Backup & Restore System
 
-### 🔄 Automatic Backup
+### 🔄 Automatic & Manual Backup
 
-The script automatically backs up every day at **2:00 AM**:
+  - **Automatic:** The script configures a cron job to run a full backup every day at **2:00 AM**.
+  - **Manual:** You can trigger a backup anytime for testing or maintenance.
 
-  - **📋 Workflows** and **Credentials** from N8N
-  - **💾 Database** (SQLite) with all data
-  - **🔐 Encryption keys** and config files
-  - **📦 Compression** with gzip to save space
-
-### 🧪 Manual Backup Test
+<!-- end list -->
 
 ```bash
-# Run a backup test to check
-/home/n8n/backup-manual.sh
-
-# Run a regular backup
+# Run a manual backup
 /home/n8n/backup-workflows.sh
 
+# Run a manual test with system info
+/home/n8n/backup-manual.sh
+
 # View backup logs
-tail -f /home/n8n/files/backup_full/backup.log
-```
-
-### 📁 Backup Structure
-
-```
-/home/n8n/files/backup_full/
-├── n8n_backup_20241227_140000.tar.gz   # Today's backup
-├── n8n_backup_20241226_140000.tar.gz   # Yesterday's backup
-├── n8n_backup_20241225_140000.tar.gz   # 2 days ago backup
-├── ...                                 # Max 30 copies
-└── backup.log                          # Log file
+tail -f /home/n8n/logs/backup.log
 ```
 
 ### 📦 Backup File Content
 
-Each backup file contains:
+Each compressed `.tar.gz` backup file contains the essential data to fully restore your instance:
 
 ```
-backup_metadata.json          # Backup information
-workflows/                    # All exported workflows
-├── 1-My_Workflow.json
-├── 2-Another_Workflow.json
-└── workflows.json           # List of workflows
-credentials/                 # Credentials & database
-├── database.sqlite          # N8N database
-└── encryptionKey            # Encryption key
-config/                      # Config files (if any)
+credentials/
+├── database.sqlite          # N8N database (contains all workflows, credentials, etc.)
+└── encryptionKey            # The encryption key for your credentials
+config/
+├── .env                     # Environment file with secrets (IMPORTANT!)
+├── docker-compose.yml       # Docker configuration
+└── Caddyfile                # Caddy web server configuration
+backup_metadata.json          # Information about the backup
 ```
 
-### 🔧 Restore from Backup
+### 🔧 Restore From a Backup
 
-```bash
-# 1. Stop containers
-cd /home/n8n && docker-compose down
+The easiest way to restore your data is by using the script's integrated restore feature during a fresh installation.
 
-# 2. Unzip backup
-cd /home/n8n/files/backup_full
-tar -xzf n8n_backup_YYYYMMDD_HHMMSS.tar.gz
+1.  Run the installation script:
+    ```bash
+    sudo ./auto_deploy_n8n.sh
+    ```
+2.  When asked **"Do you want to restore data from an existing backup?"**, answer `y`.
+3.  Follow the on-screen prompts to select your backup source (a local file or Google Drive).
 
-# 3. Copy files to the old location
-cp credentials/database.sqlite /home/n8n/
-cp credentials/encryptionKey /home/n8n/
-# Workflows will be automatically imported when N8N starts
-
-# 4. Restart
-cd /home/n8n && docker-compose up -d
-```
+The script will automatically handle the extraction and restoration of your database, encryption key, and critical configurations.
 
 ## 🛠️ System Management
 
 ### 🔧 Basic Commands
 
 ```bash
-# View container status
-cd /home/n8n && docker-compose ps
+# Go to the installation directory
+cd /home/n8n
 
-# View real-time logs
-cd /home/n8n && docker-compose logs -f
+# View container status
+docker compose ps
+
+# View real-time logs for all services
+docker compose logs -f
+
+# View logs for a specific service (e.g., n8n)
+docker compose logs -f n8n
 
 # Restart a specific service
-cd /home/n8n && docker-compose restart n8n
-cd /home/n8n && docker-compose restart caddy
-cd /home/n8n && docker-compose restart fastapi  # If News API is installed
+docker compose restart n8n
 
-# Rebuild everything
-cd /home/n8n && docker-compose down && docker-compose up -d --build
+# Stop all services
+docker compose down
+
+# Rebuild and start all services
+docker compose up -d --build
 ```
 
 ### 🔍 Troubleshooting & Diagnostics
 
+The script includes a powerful diagnostic tool to help you quickly identify issues.
+
 ```bash
-# Automatic diagnostic script (NEW FEATURE!)
+# Run the automatic diagnostic script
 /home/n8n/troubleshoot.sh
-
-# Check Docker status
-docker ps --filter "name=n8n"
-
-# View detailed logs
-cd /home/n8n && docker-compose logs n8n
-cd /home/n8n && docker-compose logs caddy
-cd /home/n8n && docker-compose logs fastapi  # News API
-
-# Check disk usage
-df -h
-docker system df
-
-# Check memory
-free -h
-docker stats --no-stream
 ```
 
-### 🔄 Updates & Maintenance
-
-```bash
-# Automatic update (every 12h if enabled)
-/home/n8n/update-n8n.sh
-
-# Manual update components
-docker exec -it n8n_container pip3 install --break-system-packages -U yt-dlp
-
-# Clean Docker cache
-docker system prune -f
-docker image prune -f
-```
+This tool checks your system info, container status, network ports, SSL certificates, file permissions, and recent error logs.
 
 ## 📂 Full Directory Structure
 
 ```
 /home/n8n/
+├── 🔐 .env                       # Secure environment variables (tokens, keys)
 ├── 🐳 docker-compose.yml          # Main config with all services
-├── 🏗️ Dockerfile                  # N8N custom image
-├── 🌐 Caddyfile                   # Reverse proxy + SSL config
+├── 🏗️ Dockerfile                  # N8N custom image configuration
+├── 🌐 Caddyfile                   # Reverse proxy + SSL configuration
 ├── 💾 backup-workflows.sh         # Auto backup script
 ├── 🧪 backup-manual.sh            # Manual backup test script
 ├── 🔄 update-n8n.sh               # Auto update script
-├── 🔍 troubleshoot.sh             # Diagnostic script (NEW!)
-├── 📱 telegram_config.txt         # Telegram settings (if any)
-├── 🔑 news_api_token.txt          # News API token (if any)
-├── 📁 files/                      # N8N data directory
-│   ├── backup_full/               # 💾 Backup storage (30 copies)
-│   ├── temp/                      # 🗂️ Temporary files
-│   └── youtube_content_anylystic/ # 🎬 Video downloads
-├── 📰 news_api/                   # News API (if any)
+├── 🔍 troubleshoot.sh             # Diagnostic script
+├── 📱 telegram_config.txt         # Telegram settings (if configured)
+├── ☁️ gdrive_config.txt            # Google Drive settings (if configured)
+├── 📁 files/                      # N8N persistent data directory
+│   ├── database.sqlite            # N8N main database
+│   ├── encryptionKey              # N8N encryption key
+│   ├── backup_full/               # Backup storage location
+│   ├── temp/                      # Temporary files
+│   └── youtube_content_anylystic/ # Video download location
+├── 📰 news_api/                   # News API source code (if installed)
 │   ├── Dockerfile
-│   ├── requirements.txt           # Python dependencies
-│   ├── main.py                    # FastAPI application
-│   └── start_news_api.sh          # Startup script
-├── 💾 database.sqlite             # N8N main database
-├── 🔐 encryptionKey               # N8N encryption key
-└── 📋 logs/                       # Log files
-    ├── update.log                 # Update logs
-    └── backup.log                 # Backup logs
+│   ├── requirements.txt
+│   └── main.py
+└── 📋 logs/                       # Log files for script operations
+    ├── update.log
+    ├── backup.log
+    ├── health.log
+    └── cron.log
 ```
-
-## ⚡ Performance & Optimization
-
-### 🚀 System Optimization
-
-1.  **💾 Memory**: The script automatically sets up swap based on RAM
-2.  **⚡ CPU**: Single worker for stability
-3.  **🗂️ Disk**: Auto cleanup of old backups & Docker cache
-4.  **🌐 Network**: Caddy gzip compression enabled
-5.  **🔧 Docker**: Optimized images with multi-stage builds
-
-### 📊 Performance Monitoring
-
-```bash
-# Real-time resource usage
-docker stats
-
-# Disk usage breakdown
-df -h
-du -sh /home/n8n/*
-
-# Memory usage detail
-free -h && swapon --show
-
-# Network connections
-netstat -tulpn | grep :80
-netstat -tulpn | grep :443
-```
-
-### 🎛️ Performance Tuning
-
-```bash
-# Increase Docker memory limits (if needed)
-nano /home/n8n/docker-compose.yml
-# Add: mem_limit: 2g
-
-# Optimize N8N settings
-# In the N8N container environment:
-# N8N_EXECUTIONS_DATA_MAX_SIZE=500MB
-# N8N_EXECUTIONS_TIMEOUT=3600
-```
-
-## 🐛 Troubleshooting Guide
-
-### ❌ Common Errors & Solutions
-
-**1. 🐳 Docker daemon not running (WSL)**
-
-```bash
-# Start Docker daemon
-sudo dockerd &
-
-# Or restart Docker service
-sudo systemctl restart docker
-
-# Check status
-sudo systemctl status docker
-```
-
-**2. 🌐 Domain not pointed correctly**
-
-```bash
-# Check DNS propagation
-dig yourdomain.com A
-nslookup yourdomain.com 8.8.8.8
-
-# Check server IP
-curl -s https://api.ipify.org
-
-# Wait for DNS propagation (5-60 minutes)
-```
-
-**3. 🐳 Container does not start**
-
-```bash
-# View detailed logs
-cd /home/n8n && docker-compose logs
-
-# Cleanup and rebuild
-docker system prune -f
-cd /home/n8n && docker-compose down
-docker-compose up -d --build
-
-# If still an error, check ports
-sudo netstat -tulpn | grep :80
-sudo netstat -tulpn | grep :443
-```
-
-**4. 📰 News API authentication failed**
-
-```bash
-# Check token
-grep NEWS_API_TOKEN /home/n8n/docker-compose.yml
-
-# Test API health
-curl -X GET "https://api.yourdomain.com/health" \
-     -H "Authorization: Bearer YOUR_TOKEN"
-
-# Restart News API service
-cd /home/n8n && docker-compose restart fastapi
-```
-
-**5. 🔒 SSL Certificate issues**
-
-```bash
-# View Caddy logs
-cd /home/n8n && docker-compose logs caddy
-
-# Force SSL renewal
-docker-compose restart caddy
-
-# Check domain accessibility
-curl -I https://yourdomain.com
-```
-
-**6. 📱 Telegram backup not working**
-
-```bash
-# Test Telegram Bot
-curl -X POST "https://api.telegram.org/bot<BOT_TOKEN>/getMe"
-
-# Test sending a message
-curl -X POST "https://api.telegram.org/bot<BOT_TOKEN>/sendMessage" \
-     -d chat_id="<CHAT_ID>" \
-     -d text="Test message"
-
-# Check config file
-cat /home/n8n/telegram_config.txt
-```
-
-**7. 💾 Backup failed**
-
-```bash
-# Run a manual backup to debug
-/home/n8n/backup-manual.sh
-
-# View detailed log
-tail -f /home/n8n/files/backup_full/backup.log
-
-# Check permissions
-ls -la /home/n8n/files/backup_full/
-```
-
-### 🔧 Recovery Commands
-
-```bash
-# 🧹 Clean reinstall (DELETES EVERYTHING!)
-sudo rm -rf /home/n8n
-sudo ./auto_deploy_n8n.sh --clean
-
-# 🔄 Soft restart services
-cd /home/n8n
-docker-compose restart
-
-# 💾 Restore from backup
-cd /home/n8n/files/backup_full
-tar -xzf n8n_backup_YYYYMMDD_HHMMSS.tar.gz
-# Copy files to the old location
-
-# 🐳 Completely reset Docker
-sudo systemctl stop docker
-sudo systemctl start docker
-cd /home/n8n && docker-compose up -d
-```
-
-### 🩺 Health Check Commands
-
-```bash
-# Comprehensive system check
-/home/n8n/troubleshoot.sh
-
-# Quick status check
-cd /home/n8n && docker-compose ps
-
-# Service-specific checks
-curl -I https://yourdomain.com                    # N8N
-curl -I https://api.yourdomain.com/health        # News API
-systemctl status docker                          # Docker
-systemctl status cron                           # Cron jobs
-```
-
-## 🌟 Features Roadmap 2025
-
-  - [ ] **🌍 Multi-domain** support for multiple N8N instances
-  - [ ] **📊 Monitoring dashboard** with Grafana
-  - [ ] **☸️ Kubernetes** deployment option
-  - [ ] **🔗 External database** support (PostgreSQL)
-  - [ ] **📈 Auto-scaling** based on load
-  - [ ] **🛒 Plugin marketplace** integration
-  - [ ] **🔔 Advanced notifications** (Discord, Slack, Email)
-  - [ ] **🧠 AI content** analysis integration
 
 ## 🤝 Contributing & Support
 
 ### 💬 Get Support
 
   - **🐛 Issues**: [GitHub Issues](https://github.com/satriyabajuhitam/auto-n8n-complete/issues)
-  - **🎥 YouTube**: [Satriya Baju Hitam](https://www.youtube.com/@satriyabajuhitamsocial) - **SUBSCRIBE TO SUPPORT\!**
+  - **🎥 YouTube**: [Satriya Baju Hitam](https://www.youtube.com/@satriyabajuhitam) - **SUBSCRIBE TO SUPPORT\!**
   - **📱 Whatsapp**: 628123456789
-
-### 🔧 Contributing
-
-1.  **🍴 Fork** this repository
-2.  **🌿 Create a feature branch**: `git checkout -b feature/amazing-feature`
-3.  **💾 Commit changes**: `git commit -m 'Add amazing feature'`
-4.  **📤 Push to branch**: `git push origin feature/amazing-feature`
-5.  **🔄 Create Pull Request**
 
 ### 📝 Bug Reports
 
 When reporting a bug, please include:
 
-  - **🖥️ OS version** (Ubuntu 20.04, 22.04, etc.)
+  - **🖥️ OS version** (e.g., Ubuntu 22.04)
   - **🐳 Docker version**
-  - **📋 Error logs** from `docker-compose logs`
-  - **🔧 Steps to reproduce**
+  - **📋 Error logs** from `docker compose logs`
+  - **🔧 Steps to reproduce** the issue
 
 ## 📄 License & Credits
 
-**📜 License**: MIT License - See [LICENSE](https://www.google.com/search?q=LICENSE) file
+**📜 License**: MIT License
 
 **🙏 Credits**:
 
-  - **N8N Team** - Workflow automation platform
-  - **📰 Newspaper4k** - Python article extraction
-  - **🚀 FastAPI** - Modern Python web framework
-  - **🐳 Docker** - Containerization platform
-  - **🌐 Caddy** - Web server with automatic HTTPS
-
-## ⭐ Star History & Community
-
-> **🌟 If this script is helpful, give it a STAR to support\!**
-
-### 📊 Statistics
-
-## 🎯 Quick Links
-
-| 🔗 Link | 📝 Description |
-|---------|-----------|
-| [📚 N8N Docs](https://docs.n8n.io/) | Official N8N documentation |
-| [📰 Newspaper4k](https://pypi.org/project/newspaper4k/) | Python library for news scraping |
-| [🚀 FastAPI](https://fastapi.tiangolo.com/) | Framework for News API |
-| [🐳 Docker](https://docs.docker.com/) | Docker documentation |
-
------
+  - **N8N Team** - For the amazing workflow automation platform.
+  - **Newspaper4k** - For the powerful Python article extraction library.
+  - **FastAPI** - For the modern Python web framework.
+  - **Docker** & **Caddy** - For the containerization and web server platforms.
