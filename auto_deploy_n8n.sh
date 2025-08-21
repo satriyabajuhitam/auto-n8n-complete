@@ -850,6 +850,7 @@ services:
       N8N_DEFAULT_BINARY_DATA_FILESYSTEM_DIRECTORY: "/files"
       N8N_DEFAULT_BINARY_DATA_TEMP_DIRECTORY: "/files/temp"
       NODE_FUNCTION_ALLOW_BUILTIN: "child_process,path,fs,util,os"
+      N8N_TRUSTED_PROXIES: "caddy"
     volumes:
       - ./files:/home/node/.n8n
       - ./files:/files
@@ -900,6 +901,7 @@ services:
       N8N_DEFAULT_BINARY_DATA_FILESYSTEM_DIRECTORY: "/files"
       N8N_DEFAULT_BINARY_DATA_TEMP_DIRECTORY: "/files/temp"
       NODE_FUNCTION_ALLOW_BUILTIN: "child_process,path,fs,util,os"
+      N8N_TRUSTED_PROXIES: "caddy"
     volumes:
       - ./files:/home/node/.n8n
       - ./files/youtube_content_anylystic:/data/youtube_content_anylystic
