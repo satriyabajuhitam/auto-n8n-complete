@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # =============================================================================
-# 🚀 AUTOMATED N8N INSTALLATION SCRIPT 2025
+# 🚀 AUTOMATED N8N INSTALLATION SCRIPT
 # =============================================================================
 
 set -e
@@ -193,122 +193,120 @@ setup_rclone_config() {
 
     echo ""
     echo -e "${YELLOW}╔══════════════════════════════════════════════════════════════════════════════╗${NC}"
-    echo -e "${YELLOW}║${WHITE}             ⚙️ PANDUAN KONFIGURASI RCLONE + GOOGLE DRIVE ⚙️              ${YELLOW}║${NC}"
+    echo -e "${YELLOW}║${WHITE}            ⚙️ RCLONE + GOOGLE DRIVE CONFIGURATION GUIDE ⚙️             ${YELLOW}║${NC}"
     echo -e "${YELLOW}╚══════════════════════════════════════════════════════════════════════════════╝${NC}"
-    echo "Anda akan masuk ke mode konfigurasi rclone. Ikuti panduan ini dengan TEPAT."
+    echo "You are about to enter the rclone configuration wizard. Follow these instructions EXACTLY."
     echo ""
-    echo -e "   Skrip akan menjalankan ${CYAN}rclone config${NC}. Ikuti dialog interaktifnya:"
+    echo -e "   The script will run ${CYAN}rclone config${NC}. Follow the interactive prompts:"
     echo ""
-    echo -e "   1. Saat ditanya ${WHITE}n/s/q> ${NC}, ketik ${GREEN}n${NC} lalu [Enter] (untuk New remote)."
+    echo -e "   1. When prompted ${WHITE}n/s/q> ${NC}, type ${GREEN}n${NC} and press [Enter] (for New remote)."
     echo ""
-    echo -e "   2. Saat ditanya ${WHITE}name> ${NC}, ketik nama remote ini:"
+    echo -e "   2. When prompted for a ${WHITE}name> ${NC}, type this exact remote name:"
     echo -e "      ${RED}👉 ${RCLONE_REMOTE_NAME} ${NC}"
-    echo -e "      (PENTING: Nama harus sama persis, lalu tekan [Enter])"
+    echo -e "      (IMPORTANT: The name must be exact, then press [Enter])"
     echo ""
-    echo -e "   3. Anda akan melihat daftar cloud storage. Cari ${WHITE}Google Drive${NC}."
-    echo -e "      Ketik nomor yang sesuai (misal: ${GREEN}17${NC}) atau ketik ${GREEN}drive${NC}, lalu [Enter]."
+    echo -e "   3. You will see a list of cloud storage options. Look for ${WHITE}Google Drive${NC}."
+    echo -e "      Type the corresponding number (e.g., ${GREEN}17${NC}) or type ${GREEN}drive${NC}, then press [Enter]."
     echo ""
-    echo -e "   4. Untuk ${WHITE}client_id> ${NC} dan ${WHITE}client_secret> ${NC}, biarkan kosong. Langsung [Enter] 2x."
+    echo -e "   4. For ${WHITE}client_id> ${NC} and ${WHITE}client_secret> ${NC}, leave them blank. Just press [Enter] twice."
     echo ""
-    echo -e "   5. Untuk ${WHITE}scope> ${NC}, pilih akses penuh. Ketik ${GREEN}1${NC} lalu [Enter]."
+    echo -e "   5. For ${WHITE}scope> ${NC}, select full access. Type ${GREEN}1${NC} and press [Enter]."
     echo ""
-    echo -e "   6. Untuk ${WHITE}root_folder_id> ${NC} dan ${WHITE}service_account_file> ${NC}, biarkan kosong. Langsung [Enter] 2x."
+    echo -e "   6. For ${WHITE}root_folder_id> ${NC} and ${WHITE}service_account_file> ${NC}, leave them blank. Just press [Enter] twice."
     echo ""
-    echo -e "   7. Saat ditanya ${WHITE}Edit advanced config? (y/n)> ${NC}, ketik ${GREEN}n${NC} lalu [Enter]."
+    echo -e "   7. When asked ${WHITE}Edit advanced config? (y/n)> ${NC}, type ${GREEN}n${NC} and press [Enter]."
     echo ""
-    echo -e "   8. Saat ditanya ${WHITE}Use auto config? (y/n)> ${NC}, ketik ${RED}n${NC} lalu [Enter]."
-    echo -e "      ${YELLOW}(Ini langkah krusial jika Anda terhubung via SSH).${NC}"
+    echo -e "   8. When asked ${WHITE}Use auto config? (y/n)> ${NC}, type ${RED}n${NC} and press [Enter]."
+    echo -e "      ${YELLOW}(This is a crucial step when connecting via SSH).${NC}"
     echo ""
-    echo -e "   9. Rclone akan menampilkan sebuah link otorisasi. ${CYAN}Salin (copy) link tersebut${NC}."
-    echo -e "      Buka link di browser komputer Anda, login ke akun Google, dan berikan izin."
+    echo -e "   9. Rclone will display an authorization link. ${CYAN}Copy this link${NC}."
+    echo -e "      Open the link in your computer's browser, log in to your Google account, and grant permission."
     echo ""
-    echo -e "  10. Setelah memberi izin, Google akan memberikan kode verifikasi di browser."
-    echo -e "      ${CYAN}Salin kode tersebut dan tempel (paste) kembali ke terminal${NC}, lalu [Enter]."
+    echo -e "  10. After granting permission, Google will provide a verification code in the browser."
+    echo -e "      ${CYAN}Copy that code and paste it back into your terminal${NC}, then press [Enter]."
     echo ""
-    echo -e "  11. Saat ditanya ${WHITE}Configure this as a team drive? (y/n)> ${NC}, ketik ${GREEN}n${NC} lalu [Enter]."
+    echo -e "  11. When asked ${WHITE}Configure this as a team drive? (y/n)> ${NC}, type ${GREEN}n${NC} and press [Enter]."
     echo ""
-    echo -e "  12. Konfirmasi pengaturan. Ketik ${GREEN}y${NC} lalu [Enter]."
+    echo -e "  12. Confirm the settings. Type ${GREEN}y${NC} and press [Enter]."
     echo ""
-    echo -e "  13. Anda kembali ke menu utama rclone. Ketik ${GREEN}q${NC} lalu [Enter] untuk keluar."
+    echo -e "  13. You will be back at the main menu. Type ${GREEN}q${NC} and press [Enter] to quit."
     echo ""
-    read -p "Tekan [Enter] jika Anda sudah siap untuk memulai 'rclone config'..."
+    read -p "Press [Enter] when you are ready to start 'rclone config'..."
 
     rclone config
 
     if ! rclone listremotes | grep -q "^${RCLONE_REMOTE_NAME}:"; then
-        error "Konfigurasi remote rclone '${RCLONE_REMOTE_NAME}' gagal. Silakan coba lagi."
+        error "rclone remote configuration '${RCLONE_REMOTE_NAME}' failed. Please try again."
         exit 1
     fi
-    success "Remote rclone '${RCLONE_REMOTE_NAME}' berhasil dikonfigurasi!"
+    success "rclone remote '${RCLONE_REMOTE_NAME}' configured successfully!"
 }
 
 get_restore_option() {
-    # (Fungsi ini tidak diubah secara signifikan, tetap seperti sebelumnya)
     echo ""
     echo -e "${CYAN}╔══════════════════════════════════════════════════════════════════════════════╗${NC}"
-    echo -e "${CYAN}║${WHITE}                        🔄 OPSI RESTORE DATA                                ${CYAN}║${NC}"
+    echo -e "${CYAN}║${WHITE}                        🔄 DATA RESTORATION OPTION                          ${CYAN}║${NC}"
     echo -e "${CYAN}╚══════════════════════════════════════════════════════════════════════════════╝${NC}"
     echo ""
-    read -p "🔄 Apakah Anda ingin me-restore data dari backup yang sudah ada? (y/N): " -n 1 -r; echo
+    read -p "🔄 Do you want to restore data from an existing backup? (y/N): " -n 1 -r; echo
     if [[ ! $REPLY =~ ^[Yy]$ ]]; then
         RESTORE_MODE=false
         return 0
     fi
     RESTORE_MODE=true
-    echo "Pilih sumber restore:"
-    echo -e "  ${GREEN}1. Dari file backup lokal (.tar.gz)${NC}"
-    echo -e "  ${GREEN}2. Dari Google Drive (membutuhkan konfigurasi rclone)${NC}"
-    read -p "Pilihan Anda [1]: " source_choice
+    echo "Select restore source:"
+    echo -e "  ${GREEN}1. From a local backup file (.tar.gz)${NC}"
+    echo -e "  ${GREEN}2. From Google Drive (requires rclone configuration)${NC}"
+    read -p "Your choice [1]: " source_choice
     if [[ "$source_choice" == "2" ]]; then
         RESTORE_SOURCE="gdrive"
         install_rclone
         setup_rclone_config
-        read -p "📝 Masukkan nama folder di Google Drive [${GDRIVE_BACKUP_FOLDER}]: " GDRIVE_FOLDER_INPUT
+        read -p "📝 Enter the folder name on Google Drive [${GDRIVE_BACKUP_FOLDER}]: " GDRIVE_FOLDER_INPUT
         if [[ -n "$GDRIVE_FOLDER_INPUT" ]]; then GDRIVE_BACKUP_FOLDER="$GDRIVE_FOLDER_INPUT"; fi
-        log "🔍 Mengambil daftar backup dari Google Drive..."
+        log "🔍 Fetching backup list from Google Drive..."
         mapfile -t backups < <(rclone lsf "$RCLONE_REMOTE_NAME:$GDRIVE_BACKUP_FOLDER" --include "*.tar.gz" | sort -r)
         if [ ${#backups[@]} -eq 0 ]; then
-            error "Tidak ada file backup di folder '$GDRIVE_BACKUP_FOLDER'."
+            error "No backup files found in folder '$GDRIVE_BACKUP_FOLDER'."
             exit 1
         fi
-        echo "Pilih file backup untuk di-restore:"
+        echo "Select the backup file to restore:"
         for i in "${!backups[@]}"; do
             echo "  $((i+1)). ${backups[$i]}"
         done
-        read -p "Masukkan nomor file: " file_idx
+        read -p "Enter the file number: " file_idx
         selected_backup="${backups[$((file_idx-1))]}"
         if [[ -z "$selected_backup" ]]; then
-            error "Pilihan tidak valid."
+            error "Invalid choice."
             exit 1
         fi
-        log "📥 Mengunduh file backup '$selected_backup'..."
+        log "📥 Downloading backup file '$selected_backup'..."
         mkdir -p /tmp/n8n_restore
         rclone copyto "$RCLONE_REMOTE_NAME:$GDRIVE_BACKUP_FOLDER/$selected_backup" "/tmp/n8n_restore/$selected_backup" --progress
         RESTORE_FILE_PATH="/tmp/n8n_restore/$selected_backup"
-        success "File backup berhasil diunduh."
+        success "Backup file downloaded successfully."
     else
         RESTORE_SOURCE="local"
         while true; do
-            read -p "📁 Masukkan path lengkap ke file backup (.tar.gz): " RESTORE_FILE_PATH
-            if [[ -f "$RESTORE_FILE_PATH" ]]; then break; else error "File tidak ditemukan."; fi
+            read -p "📁 Enter the full path to the backup file (.tar.gz): " RESTORE_FILE_PATH
+            if [[ -f "$RESTORE_FILE_PATH" ]]; then break; else error "File not found."; fi
         done
     fi
-    log "🔍 Memeriksa integritas file backup..."
+    log "🔍 Verifying backup file integrity..."
     if ! tar -tzf "$RESTORE_FILE_PATH" &>/dev/null; then
-        error "File backup korup atau formatnya salah."
+        error "Backup file is corrupt or has the wrong format."
         exit 1
     fi
-    success "File backup valid."
+    success "Backup file is valid."
 }
 
 perform_restore() {
-    # (Fungsi ini tidak diubah secara signifikan, tetap seperti sebelumnya)
     if [[ "$RESTORE_MODE" != "true" ]]; then return 0; fi
-    log "🔄 Memulai proses restore dari: $RESTORE_FILE_PATH"
+    log "🔄 Starting restore process from: $RESTORE_FILE_PATH"
     mkdir -p "$INSTALL_DIR/files"
-    log "🧹 Membersihkan data lama..."
+    log "🧹 Cleaning old data..."
     rm -rf "$INSTALL_DIR/files/"* 2>/dev/null || true
-    log "📦 Mengekstrak file backup..."
+    log "📦 Extracting backup file..."
     local temp_extract_dir="/tmp/n8n_restore_extract_$$"
     mkdir -p "$temp_extract_dir"
     if tar -xzvf "$RESTORE_FILE_PATH" -C "$temp_extract_dir"; then
@@ -319,31 +317,31 @@ perform_restore() {
             backup_content_dir="$temp_extract_dir"
         fi
         if [[ -n "$backup_content_dir" ]]; then
-            log "Menemukan konten backup di: $backup_content_dir"
+            log "Found backup content in: $backup_content_dir"
             if [[ -d "$backup_content_dir/credentials" ]]; then
-                log "Me-restore database dan key..."
+                log "Restoring database and key..."
                 cp -a "$backup_content_dir/credentials/"* "$INSTALL_DIR/files/" 2>/dev/null || true
             fi
             if [[ -f "$backup_content_dir/config/docker-compose.yml" ]]; then
-                log "🔑 Mengekstrak encryption key dari backup..."
+                log "🔑 Extracting encryption key from backup..."
                 local old_key=$(grep 'N8N_ENCRYPTION_KEY' "$backup_content_dir/config/docker-compose.yml" | head -n 1 | cut -d '=' -f2-)
                 if [[ -n "$old_key" ]]; then
                     N8N_ENCRYPTION_KEY="$old_key"
-                    info "Berhasil mengekstrak encryption key lama."
+                    info "Successfully extracted old encryption key."
                 else
-                    warning "Tidak dapat mengekstrak encryption key. Ini bisa menyebabkan masalah pada kredensial lama."
+                    warning "Could not extract encryption key. This might cause issues with old credentials."
                 fi
             fi
         else
-            error "Struktur file backup tidak valid."
+            error "Invalid backup file structure."
             exit 1
         fi
         rm -rf "$temp_extract_dir"
         if [[ "$RESTORE_SOURCE" == "gdrive" ]]; then rm -rf "/tmp/n8n_restore"; fi
         chown -R 1000:1000 "$INSTALL_DIR/files/"
-        success "✅ Data berhasil di-restore!"
+        success "✅ Data restored successfully!"
     else
-        error "Gagal mengekstrak file backup."
+        error "Failed to extract backup file."
         rm -rf "$temp_extract_dir"
         exit 1
     fi
@@ -355,25 +353,25 @@ perform_restore() {
 
 get_domain_input() {
     echo -e "${CYAN}╔══════════════════════════════════════════════════════════════════════════════╗${NC}"
-    echo -e "${CYAN}║${WHITE}                           🌐 KONFIGURASI DOMAIN                                 ${CYAN}║${NC}"
+    echo -e "${CYAN}║${WHITE}                           🌐 DOMAIN CONFIGURATION                                ${CYAN}║${NC}"
     echo -e "${CYAN}╚══════════════════════════════════════════════════════════════════════════════╝${NC}"
-    echo "Instalasi ini membutuhkan sebuah domain yang sudah diarahkan (A Record) ke IP server ini."
+    echo "This installation requires a domain with an A Record pointed to this server's IP address."
     while true; do
-        read -p "🌐 Masukkan domain utama untuk N8N (contoh: n8n.domain.com): " DOMAIN
+        read -p "🌐 Enter the main domain for N8N (e.g., n8n.domain.com): " DOMAIN
         if [[ -n "$DOMAIN" && "$DOMAIN" =~ ^[a-zA-Z0-9][a-zA-Z0-9.-]*[a-zA-Z0-9]$ ]]; then
             break
         else
-            error "Format domain tidak valid. Silakan coba lagi."
+            error "Invalid domain format. Please try again."
         fi
     done
-    info "Domain N8N akan diinstal di: ${DOMAIN}"
+    info "N8N will be installed on: ${DOMAIN}"
 }
 
 get_cleanup_option() {
     if [[ "$CLEAN_INSTALL" == "true" ]]; then return 0; fi
     if [[ -d "$INSTALL_DIR" ]]; then
-        warning "Direktori instalasi N8N lama terdeteksi di: $INSTALL_DIR"
-        read -p "🗑️  Apakah Anda ingin menghapus instalasi lama dan memulai dari awal? (y/N): " -n 1 -r; echo
+        warning "An old N8N installation was detected at: $INSTALL_DIR"
+        read -p "🗑️  Do you want to delete the old installation and start fresh? (y/N): " -n 1 -r; echo
         if [[ $REPLY =~ ^[Yy]$ ]]; then
             CLEAN_INSTALL=true
         fi
@@ -383,39 +381,39 @@ get_cleanup_option() {
 get_backup_config() {
     echo ""
     echo -e "${CYAN}╔══════════════════════════════════════════════════════════════════════════════╗${NC}"
-    echo -e "${CYAN}║${WHITE}                      💾 KONFIGURASI BACKUP OTOMATIS                          ${CYAN}║${NC}"
+    echo -e "${CYAN}║${WHITE}                      💾 AUTOMATIC BACKUP CONFIGURATION                          ${CYAN}║${NC}"
     echo -e "${CYAN}╚══════════════════════════════════════════════════════════════════════════════╝${NC}"
     # Telegram Backup
-    read -p "📱 Apakah Anda ingin mengatur notifikasi backup via Telegram? (Y/n): " -n 1 -r; echo
+    read -p "📱 Do you want to set up backup notifications via Telegram? (Y/n): " -n 1 -r; echo
     if [[ ! $REPLY =~ ^[Nn]$ ]]; then
         ENABLE_TELEGRAM=true
-        info "Untuk mendapatkan Token dan Chat ID, ikuti panduan di dokumentasi BotFather dan UserInfoBot di Telegram."
-        while true; do read -p "🤖 Masukkan Telegram Bot Token: " TELEGRAM_BOT_TOKEN; if [[ -n "$TELEGRAM_BOT_TOKEN" ]]; then break; fi; done
-        while true; do read -p "🆔 Masukkan Telegram Chat ID: " TELEGRAM_CHAT_ID; if [[ -n "$TELEGRAM_CHAT_ID" ]]; then break; fi; done
-        success "Backup Telegram dikonfigurasi."
+        info "To get your Token and Chat ID, follow the guides for BotFather and UserInfoBot on Telegram."
+        while true; do read -p "🤖 Enter Telegram Bot Token: " TELEGRAM_BOT_TOKEN; if [[ -n "$TELEGRAM_BOT_TOKEN" ]]; then break; fi; done
+        while true; do read -p "🆔 Enter Telegram Chat ID: " TELEGRAM_CHAT_ID; if [[ -n "$TELEGRAM_CHAT_ID" ]]; then break; fi; done
+        success "Telegram Backup configured."
     fi
     # Google Drive Backup
-    read -p "☁️ Apakah Anda ingin mengatur backup ke Google Drive? (Y/n): " -n 1 -r; echo
+    read -p "☁️ Do you want to set up backups to Google Drive? (Y/n): " -n 1 -r; echo
     if [[ ! $REPLY =~ ^[Nn]$ ]]; then
         ENABLE_GDRIVE_BACKUP=true
         install_rclone
         setup_rclone_config
-        read -p "📝 Masukkan nama folder di Google Drive untuk menyimpan backup [${GDRIVE_BACKUP_FOLDER}]: " GDRIVE_FOLDER_INPUT
+        read -p "📝 Enter the folder name on Google Drive to store backups [${GDRIVE_BACKUP_FOLDER}]: " GDRIVE_FOLDER_INPUT
         if [[ -n "$GDRIVE_FOLDER_INPUT" ]]; then GDRIVE_BACKUP_FOLDER="$GDRIVE_FOLDER_INPUT"; fi
-        success "Backup Google Drive dikonfigurasi."
+        success "Google Drive Backup configured."
     fi
 }
 
 get_auto_update_config() {
     echo ""
     echo -e "${CYAN}╔══════════════════════════════════════════════════════════════════════════════╗${NC}"
-    echo -e "${CYAN}║${WHITE}                        🔄 AUTO-UPDATE N8N                                  ${CYAN}║${NC}"
+    echo -e "${CYAN}║${WHITE}                        🔄 N8N AUTO-UPDATE                                  ${CYAN}║${NC}"
     echo -e "${CYAN}╚══════════════════════════════════════════════════════════════════════════════╝${NC}"
-    echo "Fitur ini akan otomatis memperbarui N8N, membuat backup sebelum update, dan memberi notifikasi."
-    read -p "🔄 Apakah Anda ingin mengaktifkan Auto-Update (setiap 12 jam)? (Y/n): " -n 1 -r; echo
+    echo "This feature will automatically update N8N, back up before updating, and send notifications."
+    read -p "🔄 Do you want to enable Auto-Update (every 12 hours)? (Y/n): " -n 1 -r; echo
     if [[ ! $REPLY =~ ^[Nn]$ ]]; then
         ENABLE_AUTO_UPDATE=true
-        success "Auto-Update diaktifkan."
+        success "Auto-Update enabled."
     else
         ENABLE_AUTO_UPDATE=false
     fi
@@ -426,20 +424,20 @@ get_auto_update_config() {
 # =============================================================================
 
 verify_dns() {
-    log "🔍 Memverifikasi DNS untuk domain ${DOMAIN}..."
+    log "🔍 Verifying DNS for domain ${DOMAIN}..."
     local server_ip=$(curl -s https://api.ipify.org || curl -s http://ipv4.icanhazip.com || echo "unknown")
-    info "IP Server Anda: ${server_ip}"
+    info "Your Server IP: ${server_ip}"
     local domain_ip=$(dig +short "$DOMAIN" A | tail -n1)
-    info "IP domain ${DOMAIN} saat ini: ${domain_ip:-"tidak ditemukan"}"
+    info "Current IP for ${DOMAIN}: ${domain_ip:-"not found"}"
     if [[ "$domain_ip" != "$server_ip" ]]; then
-        warning "DNS domain belum mengarah ke IP server ini!"
-        echo -e "${YELLOW}Pastikan Anda telah membuat A Record di DNS manager Anda: ${DOMAIN} -> ${server_ip}${NC}"
-        read -p "🤔 Lanjutkan instalasi? (SSL mungkin akan gagal) (y/N): " -n 1 -r; echo
+        warning "The domain's DNS is not pointed to this server!"
+        echo -e "${YELLOW}Please ensure you have an A Record in your DNS manager: ${DOMAIN} -> ${server_ip}${NC}"
+        read -p "🤔 Continue with the installation? (SSL might fail) (y/N): " -n 1 -r; echo
         if [[ ! $REPLY =~ ^[Yy]$ ]]; then
             exit 1
         fi
     else
-        success "Verifikasi DNS berhasil."
+        success "DNS verification successful."
     fi
 }
 
@@ -449,7 +447,7 @@ verify_dns() {
 
 cleanup_old_installation() {
     if [[ "$CLEAN_INSTALL" != "true" ]]; then return 0; fi
-    log "🗑️ Menghapus instalasi lama..."
+    log "🗑️ Deleting old installation..."
     if [[ -d "$INSTALL_DIR" ]]; then
         cd "$INSTALL_DIR"
         if [[ -n "$DOCKER_COMPOSE" ]]; then
@@ -458,22 +456,22 @@ cleanup_old_installation() {
     fi
     rm -rf "$INSTALL_DIR"
     crontab -l 2>/dev/null | grep -v "$INSTALL_DIR" | crontab - 2>/dev/null || true
-    success "Instalasi lama berhasil dihapus."
+    success "Old installation deleted successfully."
 }
 
 install_docker() {
-    if [[ "$SKIP_DOCKER" == "true" ]]; then info "Melewatkan instalasi Docker."; return 0; fi
+    if [[ "$SKIP_DOCKER" == "true" ]]; then info "Skipping Docker installation."; return 0; fi
     if command -v docker &> /dev/null; then
-        info "Docker sudah terinstal."
+        info "Docker is already installed."
         if ! docker info &> /dev/null; then systemctl start docker && systemctl enable docker; fi
         if ! docker compose version &> /dev/null; then
-            log "Menginstal Docker Compose Plugin (v2)..."
+            log "Installing Docker Compose Plugin (v2)..."
             apt-get update && apt-get install -y docker-compose-plugin
             export DOCKER_COMPOSE="docker compose"
         fi
         return 0
     fi
-    log "📦 Menginstal Docker Engine..."
+    log "📦 Installing Docker Engine..."
     apt-get update
     apt-get install -y apt-transport-https ca-certificates curl gnupg lsb-release
     install -m 0755 -d /etc/apt/keyrings
@@ -484,24 +482,24 @@ install_docker() {
     apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
     systemctl start docker && systemctl enable docker
     export DOCKER_COMPOSE="docker compose"
-    success "Docker berhasil diinstal."
+    success "Docker installed successfully."
 }
 
 create_project_structure() {
-    log "📁 Membuat struktur direktori proyek..."
+    log "📁 Creating project directory structure..."
     mkdir -p "$INSTALL_DIR"/{files/backup_full,files/temp,files/youtube_content_anylystic,logs}
     touch "$INSTALL_DIR"/logs/{backup.log,update.log,cron.log,health.log}
-    success "Struktur direktori dibuat di $INSTALL_DIR"
+    success "Directory structure created at $INSTALL_DIR"
 }
 
 setup_env_file() {
-    log "🔐 Menyiapkan file environment (.env)..."
+    log "🔐 Setting up environment file (.env)..."
     if [[ -z "$N8N_ENCRYPTION_KEY" ]]; then
         if [[ -f "$INSTALL_DIR/.env" ]]; then
-            info "Menemukan file .env, memuat encryption key yang ada."
+            info "Found existing .env file, loading encryption key."
             set -a; source "$INSTALL_DIR/.env"; set +a
         else
-            info "Membuat encryption key baru."
+            info "Generating new encryption key."
             N8N_ENCRYPTION_KEY=$(openssl rand -hex 32)
         fi
     fi
@@ -512,11 +510,11 @@ N8N_ENCRYPTION_KEY=${N8N_ENCRYPTION_KEY}
 GENERIC_TIMEZONE=Asia/Jakarta
 EOF
     chmod 600 "$INSTALL_DIR/.env"
-    success ".env file berhasil dibuat dan diamankan."
+    success ".env file created and secured successfully."
 }
 
 create_dockerfile() {
-    log "🐳 Membuat Dockerfile untuk N8N (dengan FFmpeg & yt-dlp)..."
+    log "🐳 Creating Dockerfile for N8N (with FFmpeg & yt-dlp)..."
     cat > "$INSTALL_DIR/Dockerfile" << 'EOF'
 FROM n8nio/n8n:latest
 USER root
@@ -529,11 +527,11 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
     CMD curl -f http://localhost:5678/healthz || exit 1
 WORKDIR /data
 EOF
-    success "Dockerfile berhasil dibuat."
+    success "Dockerfile created successfully."
 }
 
 create_docker_compose() {
-    log "🐳 Membuat file docker-compose.yml..."
+    log "🐳 Creating docker-compose.yml file..."
     cat > "$INSTALL_DIR/docker-compose.yml" << EOF
 version: '3.8'
 
@@ -594,11 +592,11 @@ networks:
   n8n_network:
     driver: bridge
 EOF
-    success "docker-compose.yml berhasil dibuat."
+    success "docker-compose.yml created successfully."
 }
 
 create_caddyfile() {
-    log "🌐 Membuat file konfigurasi Caddy (Caddyfile)..."
+    log "🌐 Creating Caddy configuration file (Caddyfile)..."
     cat > "$INSTALL_DIR/Caddyfile" << EOF
 {
     email admin@${DOMAIN}
@@ -618,7 +616,7 @@ ${DOMAIN} {
     }
 }
 EOF
-    success "Caddyfile berhasil dibuat."
+    success "Caddyfile created successfully."
 }
 
 # =============================================================================
@@ -626,7 +624,7 @@ EOF
 # =============================================================================
 
 create_backup_scripts() {
-    log "💾 Membuat skrip backup..."
+    log "💾 Creating backup scripts..."
     cat > "$INSTALL_DIR/backup-workflows.sh" << 'EOF'
 #!/bin/bash
 set -e
@@ -637,44 +635,44 @@ BACKUP_NAME="n8n_backup_$TIMESTAMP"
 TEMP_DIR="/tmp/$BACKUP_NAME"
 log() { echo "[$(date +'%Y-%m-%d %H:%M:%S')] $1" | tee -a "$LOG_FILE"; }
 mkdir -p "$BACKUP_DIR" "$TEMP_DIR/credentials" "$TEMP_DIR/config"
-log "🔄 Memulai backup N8N..."
+log "🔄 Starting N8N backup..."
 cp "/home/n8n/files/database.sqlite" "$TEMP_DIR/credentials/"
 cp "/home/n8n/.env" "$TEMP_DIR/config/"
-log "📦 Mengkompres file backup..."
+log "📦 Compressing backup file..."
 cd /tmp && tar -czf "$BACKUP_DIR/$BACKUP_NAME.tar.gz" "$BACKUP_NAME/"
 BACKUP_SIZE=$(ls -lh "$BACKUP_DIR/$BACKUP_NAME.tar.gz" | awk '{print $5}')
-log "✅ Backup selesai: $BACKUP_NAME.tar.gz ($BACKUP_SIZE)"
+log "✅ Backup complete: $BACKUP_NAME.tar.gz ($BACKUP_SIZE)"
 rm -rf "$TEMP_DIR"
-log "🧹 Membersihkan backup lokal lama (menyisakan 30 terakhir)..."
+log "🧹 Cleaning up old local backups (keeping last 30)..."
 ls -t "$BACKUP_DIR"/n8n_backup_*.tar.gz 2>/dev/null | tail -n +31 | xargs -r rm -f
 if [[ -f "/home/n8n/telegram_config.txt" ]]; then
     source "/home/n8n/telegram_config.txt"
-    MESSAGE="🔄 *N8N Backup Selesai*\nFile: \`$BACKUP_NAME.tar.gz\`\nUkuran: $BACKUP_SIZE"
+    MESSAGE="🔄 *N8N Backup Completed*\nFile: \`$BACKUP_NAME.tar.gz\`\nSize: $BACKUP_SIZE"
     curl -s -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage" -d chat_id="$TELEGRAM_CHAT_ID" -d text="$MESSAGE" -d parse_mode="Markdown" > /dev/null
 fi
 if [[ -f "/home/n8n/gdrive_config.txt" ]]; then
     source "/home/n8n/gdrive_config.txt"
-    log "☁️ Mengunggah ke Google Drive..."
+    log "☁️ Uploading to Google Drive..."
     rclone copy "$BACKUP_DIR/$BACKUP_NAME.tar.gz" "$RCLONE_REMOTE_NAME:$GDRIVE_BACKUP_FOLDER" --progress
-    log "🧹 Membersihkan backup Google Drive lama (lebih dari 30 hari)..."
+    log "🧹 Cleaning up old Google Drive backups (older than 30 days)..."
     rclone delete --min-age 30d "$RCLONE_REMOTE_NAME:$GDRIVE_BACKUP_FOLDER"
 fi
-log "🎉 Proses backup selesai."
+log "🎉 Backup process finished."
 EOF
     chmod +x "$INSTALL_DIR/backup-workflows.sh"
     # Manual backup script
     cat > "$INSTALL_DIR/backup-manual.sh" << 'EOF'
 #!/bin/bash
-echo "Menjalankan backup manual..."
+echo "Running manual backup..."
 /home/n8n/backup-workflows.sh
-echo "Selesai. Cek log di /home/n8n/logs/backup.log dan file di /home/n8n/files/backup_full"
+echo "Done. Check logs at /home/n8n/logs/backup.log and files at /home/n8n/files/backup_full"
 EOF
     chmod +x "$INSTALL_DIR/backup-manual.sh"
-    success "Skrip backup berhasil dibuat."
+    success "Backup scripts created successfully."
 }
 
 create_update_script() {
-    log "🔄 Membuat skrip auto-update..."
+    log "🔄 Creating auto-update script..."
     cat > "$INSTALL_DIR/update-n8n.sh" << 'EOF'
 #!/bin/bash
 set -e
@@ -682,24 +680,24 @@ LOG_FILE="/home/n8n/logs/update.log"
 log() { echo "[$(date)] $1" | tee -a "$LOG_FILE"; }
 send_telegram() { if [[ -f "/home/n8n/telegram_config.txt" ]]; then source "/home/n8n/telegram_config.txt"; curl -s -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage" -d chat_id="$TELEGRAM_CHAT_ID" -d text="$1" -d parse_mode="Markdown" > /dev/null; fi; }
 cd /home/n8n
-log "🔄 Memulai auto-update N8N..."
-log "💾 Membuat backup sebelum update..."
+log "🔄 Starting N8N auto-update..."
+log "💾 Backing up before update..."
 ./backup-workflows.sh
-log "📦 Menarik image Docker terbaru..."
+log "📦 Pulling latest Docker images..."
 docker compose pull
-log "🚀 Memulai ulang container..."
+log "🚀 Restarting containers..."
 docker compose up -d --remove-orphans
-log "🧹 Membersihkan image lama..."
+log "🧹 Pruning old images..."
 docker image prune -f
-log "🎉 Proses update selesai."
-send_telegram "✅ *N8N Auto-Update Berhasil*\nN8N telah diperbarui ke versi terbaru."
+log "🎉 Update process finished."
+send_telegram "✅ *N8N Auto-Update Successful*\nN8N has been updated to the latest version."
 EOF
     chmod +x "$INSTALL_DIR/update-n8n.sh"
-    success "Skrip auto-update berhasil dibuat."
+    success "Auto-update script created successfully."
 }
 
 create_health_monitor() {
-    log "🏥 Membuat skrip health monitor..."
+    log "🏥 Creating health monitor script..."
     cat > "$INSTALL_DIR/health-monitor.sh" << 'EOF'
 #!/bin/bash
 LOG_FILE="/home/n8n/logs/health.log"
@@ -708,44 +706,44 @@ N8N_HEALTH=$(curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:5678/health
 N8N_STATUS=$(docker inspect -f '{{.State.Status}}' n8n-container 2>/dev/null || echo "not_found")
 echo "[$TIMESTAMP] Health: $N8N_HEALTH, Container: $N8N_STATUS" >> "$LOG_FILE"
 if [[ "$N8N_HEALTH" != "200" ]] || [[ "$N8N_STATUS" != "running" ]]; then
-    echo "[$TIMESTAMP] N8N tidak sehat! Mencoba restart..." >> "$LOG_FILE"
+    echo "[$TIMESTAMP] N8N is unhealthy! Attempting restart..." >> "$LOG_FILE"
     cd /home/n8n && docker compose restart n8n
     if [[ -f "/home/n8n/telegram_config.txt" ]]; then
         source "/home/n8n/telegram_config.txt"
-        MESSAGE="⚠️ *Peringatan Kesehatan N8N*\nStatus: Tidak Sehat (Code: $N8N_HEALTH, Status: $N8N_STATUS)\nMencoba restart otomatis."
+        MESSAGE="⚠️ *N8N Health Alert*\nStatus: Unhealthy (Code: $N8N_HEALTH, Status: $N8N_STATUS)\nAttempting an automatic restart."
         curl -s -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage" -d chat_id="$TELEGRAM_CHAT_ID" -d text="$MESSAGE" -d parse_mode="Markdown" > /dev/null
     fi
 fi
 EOF
     chmod +x "$INSTALL_DIR/health-monitor.sh"
-    success "Skrip health monitor dibuat."
+    success "Health monitor script created."
 }
 
 create_troubleshooting_script() {
-    log "🔧 Membuat skrip troubleshooting..."
+    log "🔧 Creating troubleshooting script..."
     cat > "$INSTALL_DIR/troubleshoot.sh" << 'EOF'
 #!/bin/bash
 CYAN='\033[0;36m'; WHITE='\033[1;37m'; NC='\033[0m'; BLUE='\033[0;34m';
 echo -e "${CYAN}╔══════════════════ 🔧 N8N TROUBLESHOOTING 🔧 ══════════════════╗${NC}\n"
 cd /home/n8n
 DOMAIN=$(grep -E "^[a-zA-Z0-9.-]+\s*{" Caddyfile | head -1 | awk '{print $1}')
-echo -e "${BLUE}📍 Info Sistem & Docker:${NC}"
+echo -e "${BLUE}📍 System & Docker Info:${NC}"
 echo " • OS: $(lsb_release -ds)"
 echo " • Docker: $(docker --version)"
 echo " • Docker Compose: $(docker compose version)"
-echo -e "\n${BLUE}📍 Status Container:${NC}"; docker compose ps
-echo -e "\n${BLUE}📍 Info Instalasi:${NC}"
-echo " • Mode: Produksi (SSL)"
+echo -e "\n${BLUE}📍 Container Status:${NC}"; docker compose ps
+echo -e "\n${BLUE}📍 Installation Info:${NC}"
+echo " • Mode: Production (SSL)"
 echo " • Domain: $DOMAIN"
-echo -e "\n${BLUE}📍 Status SSL & DNS:${NC}"
+echo -e "\n${BLUE}📍 SSL & DNS Status:${NC}"
 echo " • DNS Resolution: $(dig +short $DOMAIN A | tail -1)"
-echo " • SSL Test: $(timeout 5 curl -Is https://$DOMAIN 2>/dev/null | head -1 || echo 'Gagal terhubung')"
-echo -e "\n${BLUE}📍 10 Error Log Terakhir (N8N):${NC}"
-docker compose logs n8n 2>&1 | grep -iE "(error|warn)" | tail -10 || echo " Tidak ada error/warning ditemukan."
+echo " • SSL Test: $(timeout 5 curl -Is https://$DOMAIN 2>/dev/null | head -1 || echo 'Connection failed')"
+echo -e "\n${BLUE}📍 Last 10 Error/Warn Logs (N8N):${NC}"
+docker compose logs n8n 2>&1 | grep -iE "(error|warn)" | tail -10 || echo " No errors or warnings found."
 echo -e "\n${CYAN}╚════════════════════════════════════════════════════════════════╝${NC}"
 EOF
     chmod +x "$INSTALL_DIR/troubleshoot.sh"
-    success "Skrip troubleshooting dibuat."
+    success "Troubleshooting script created."
 }
 
 # =============================================================================
@@ -754,13 +752,13 @@ EOF
 
 setup_backup_configs() {
     if [[ "$ENABLE_TELEGRAM" == "true" ]]; then
-        log "📱 Menyimpan konfigurasi Telegram..."
+        log "📱 Saving Telegram configuration..."
         echo "TELEGRAM_BOT_TOKEN=\"$TELEGRAM_BOT_TOKEN\"" > "$INSTALL_DIR/telegram_config.txt"
         echo "TELEGRAM_CHAT_ID=\"$TELEGRAM_CHAT_ID\"" >> "$INSTALL_DIR/telegram_config.txt"
         chmod 600 "$INSTALL_DIR/telegram_config.txt"
     fi
     if [[ "$ENABLE_GDRIVE_BACKUP" == "true" ]]; then
-        log "☁️ Menyimpan konfigurasi Google Drive..."
+        log "☁️ Saving Google Drive configuration..."
         echo "RCLONE_REMOTE_NAME=\"$RCLONE_REMOTE_NAME\"" > "$INSTALL_DIR/gdrive_config.txt"
         echo "GDRIVE_BACKUP_FOLDER=\"$GDRIVE_BACKUP_FOLDER\"" >> "$INSTALL_DIR/gdrive_config.txt"
         chmod 600 "$INSTALL_DIR/gdrive_config.txt"
@@ -768,91 +766,91 @@ setup_backup_configs() {
 }
 
 setup_cron_jobs() {
-    log "⏰ Mengatur cron jobs..."
+    log "⏰ Setting up cron jobs..."
     (crontab -l 2>/dev/null | grep -v "$INSTALL_DIR") | crontab -
     (crontab -l 2>/dev/null; echo "0 2 * * * $INSTALL_DIR/backup-workflows.sh >> $INSTALL_DIR/logs/cron.log 2>&1") | crontab -
     if [[ "$ENABLE_AUTO_UPDATE" == "true" ]]; then
         (crontab -l 2>/dev/null; echo "0 */12 * * * $INSTALL_DIR/update-n8n.sh >> $INSTALL_DIR/logs/cron.log 2>&1") | crontab -
     fi
     (crontab -l 2>/dev/null; echo "*/5 * * * * $INSTALL_DIR/health-monitor.sh >> $INSTALL_DIR/logs/cron.log 2>&1") | crontab -
-    log "Cron jobs yang diatur:"
+    log "Configured cron jobs:"
     crontab -l | grep "$INSTALL_DIR"
-    success "Cron jobs berhasil diatur."
+    success "Cron jobs set up successfully."
 }
 
 build_and_deploy() {
-    log "🏗️ Membangun dan menjalankan container..."
+    log "🏗️ Building and deploying containers..."
     cd "$INSTALL_DIR"
-    log "🔐 Mengatur izin untuk direktori data..."
+    log "🔐 Setting permissions for data directory..."
     chown -R 1000:1000 "$INSTALL_DIR/files/"
-    log "📦 Membangun image Docker (ini mungkin butuh beberapa menit)..."
+    log "📦 Building Docker image (this might take a few minutes)..."
     $DOCKER_COMPOSE build --no-cache
-    log "🚀 Menjalankan semua layanan..."
+    log "🚀 Starting all services..."
     $DOCKER_COMPOSE up -d
-    log "⏳ Menunggu layanan stabil dan sehat (maks 3 menit)..."
+    log "⏳ Waiting for services to become healthy (max 3 minutes)..."
     sleep 15 # Give some initial time for containers to start
     local max_retries=12; local attempt=0
     while [[ $attempt -lt $max_retries ]]; do
         n8n_health=$(docker inspect --format='{{.State.Health.Status}}' n8n-container 2>/dev/null)
         caddy_status=$(docker inspect --format='{{.State.Status}}' caddy-proxy 2>/dev/null)
         if [[ "$n8n_health" == "healthy" && "$caddy_status" == "running" ]]; then
-            success "🎉 Semua layanan berjalan dan sehat!"
+            success "🎉 All services are up and healthy!"
             return 0
         fi
-        ((attempt++)); echo "   ... Cek ke-${attempt}/${max_retries}: N8N ($n8n_health), Caddy ($caddy_status)"; sleep 15
+        ((attempt++)); echo "   ... Check #${attempt}/${max_retries}: N8N ($n8n_health), Caddy ($caddy_status)"; sleep 15
     done
-    error "Satu atau lebih layanan gagal dimulai dengan benar setelah 3 menit."
+    error "One or more services failed to start correctly after 3 minutes."
     $DOCKER_COMPOSE ps
     $DOCKER_COMPOSE logs --tail=50
     exit 1
 }
 
 check_ssl() {
-    log "🔒 Memverifikasi penerbitan sertifikat SSL (maks 2 menit)..."
+    log "🔒 Verifying SSL certificate issuance (max 2 minutes)..."
     local max_retries=12; local attempt=0;
     while [[ $attempt -lt $max_retries ]]; do
         if $DOCKER_COMPOSE logs caddy 2>&1 | grep -q "certificate obtained successfully"; then
-            success "✅ Sertifikat SSL untuk ${DOMAIN} berhasil diterbitkan."
+            success "✅ SSL certificate for ${DOMAIN} was issued successfully."
             return 0
         fi
         if $DOCKER_COMPOSE logs caddy 2>&1 | grep -q "urn:ietf:params:acme:error:rateLimited"; then
-            error "🚨 TERDETEKSI RATE LIMIT SSL!"
-            warning "Anda telah terlalu sering meminta sertifikat untuk domain ini."
-            warning "Coba lagi dalam beberapa jam atau seminggu. Untuk sementara, N8N tidak akan bisa diakses."
+            error "🚨 SSL RATE LIMIT DETECTED!"
+            warning "You have requested certificates for this domain too many times."
+            warning "Try again in a few hours or a week. N8N will be inaccessible until then."
             return 1
         fi
-        ((attempt++)); echo "   ... Menunggu status SSL (percobaan ${attempt}/${max_retries})"; sleep 10
+        ((attempt++)); echo "   ... Waiting for SSL status (attempt ${attempt}/${max_retries})"; sleep 10
     done
-    warning "Tidak dapat mengonfirmasi status SSL. Silakan cek log Caddy manual: docker compose -f ${INSTALL_DIR}/docker-compose.yml logs caddy"
+    warning "Could not confirm SSL status. Please check Caddy logs manually: docker compose -f ${INSTALL_DIR}/docker-compose.yml logs caddy"
 }
 
 show_final_summary() {
     clear
     echo -e "${GREEN}╔══════════════════════════════════════════════════════════════════════════════╗${NC}"
-    echo -e "${GREEN}║${WHITE}                 🎉 INSTALASI N8N BERHASIL DILAKUKAN! 🎉                 ${GREEN}║${NC}"
+    echo -e "${GREEN}║${WHITE}                    🎉 N8N INSTALLATION SUCCESSFUL! 🎉                   ${GREEN}║${NC}"
     echo -e "${GREEN}╚══════════════════════════════════════════════════════════════════════════════╝${NC}"
     echo ""
-    echo -e "${CYAN}🌐 AKSES N8N ANDA DI:${NC}"
+    echo -e "${CYAN}🌐 ACCESS YOUR N8N INSTANCE AT:${NC}"
     echo -e "   ${WHITE}https://${DOMAIN}${NC}"
     echo ""
-    echo -e "${CYAN}📁 INFORMASI SISTEM:${NC}"
-    echo -e " • Direktori Instalasi: ${WHITE}${INSTALL_DIR}${NC}"
-    echo -e " • File Rahasia:        ${WHITE}${INSTALL_DIR}/.env (Jaga kerahasiaan file ini!)${NC}"
-    echo -e " • Diagnostik:          ${WHITE}bash ${INSTALL_DIR}/troubleshoot.sh${NC}"
+    echo -e "${CYAN}📁 SYSTEM INFORMATION:${NC}"
+    echo -e " • Installation Directory: ${WHITE}${INSTALL_DIR}${NC}"
+    echo -e " • Secrets File:           ${WHITE}${INSTALL_DIR}/.env (Keep this file safe!)${NC}"
+    echo -e " • Diagnostics Script:     ${WHITE}bash ${INSTALL_DIR}/troubleshoot.sh${NC}"
     echo ""
-    echo -e "${CYAN}💾 KONFIGURASI BACKUP & UPDATE:${NC}"
-    echo -e " • Backup Otomatis:     ${WHITE}Setiap hari jam 2 pagi${NC}"
-    echo -e " • Lokasi Backup:       ${WHITE}${INSTALL_DIR}/files/backup_full/${NC}"
-    echo -e " • Auto-Update:         ${WHITE}$([[ "$ENABLE_AUTO_UPDATE" == "true" ]] && echo "Aktif (setiap 12 jam)" || echo "Nonaktif")${NC}"
-    echo -e " • Health Check:        ${WHITE}Setiap 5 menit${NC}"
+    echo -e "${CYAN}💾 BACKUP & UPDATE CONFIGURATION:${NC}"
+    echo -e " • Automatic Backup:       ${WHITE}Daily at 2:00 AM${NC}"
+    echo -e " • Backup Location:        ${WHITE}${INSTALL_DIR}/files/backup_full/${NC}"
+    echo -e " • Auto-Update:            ${WHITE}$([[ "$ENABLE_AUTO_UPDATE" == "true" ]] && echo "Enabled (every 12h)" || echo "Disabled")${NC}"
+    echo -e " • Health Check:           ${WHITE}Every 5 minutes${NC}"
     echo ""
-    echo -e "${CYAN}📋 PERINTAH PENTING:${NC}"
-    echo -e " • Melihat Log:         ${WHITE}cd ${INSTALL_DIR} && docker compose logs -f${NC}"
-    echo -e " • Restart Layanan:     ${WHITE}cd ${INSTALL_DIR} && docker compose restart${NC}"
-    echo -e " • Backup Manual:       ${WHITE}bash ${INSTALL_DIR}/backup-manual.sh${NC}"
-    echo -e " • Update Manual:       ${WHITE}bash ${INSTALL_DIR}/update-n8n.sh${NC}"
+    echo -e "${CYAN}📋 USEFUL COMMANDS:${NC}"
+    echo -e " • View Logs:              ${WHITE}cd ${INSTALL_DIR} && docker compose logs -f${NC}"
+    echo -e " • Restart Services:       ${WHITE}cd ${INSTALL_DIR} && docker compose restart${NC}"
+    echo -e " • Manual Backup:          ${WHITE}bash ${INSTALL_DIR}/backup-manual.sh${NC}"
+    echo -e " • Manual Update:          ${WHITE}bash ${INSTALL_DIR}/update-n8n.sh${NC}"
     echo ""
-    echo -e "${YELLOW}Terima kasih telah menggunakan skrip ini!${NC}"
+    echo -e "${YELLOW}Thank you for using this script!${NC}"
     echo -e "${GREEN}╚══════════════════════════════════════════════════════════════════════════════╝${NC}"
 }
 
