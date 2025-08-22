@@ -58,10 +58,12 @@ Download the script, make it executable, and run it with `sudo`.
 
 ```bash
 # Download the script
-wget -O auto_deploy_n8n.sh https://raw.githubusercontent.com/satriyabajuhitam/auto-n8n-complete/main/auto_deploy_n8n.sh
+cd /tmp && wget -O auto_deploy_n8n.sh https://raw.githubusercontent.com/satriyabajuhitam/auto-n8n-complete/main/auto_deploy_n8n.sh
+chmod +x auto_deploy_n8n.sh
+sudo ./auto_deploy_n8n.sh
 
-# Or ...
-git clone https://github.com/satriyabajuhitam/auto-n8n-complete.git
+# Or download and direct deploy
+cd /tmp && curl -sSL https://raw.githubusercontent.com/satriyabajuhitam/auto-n8n-complete/main/auto_deploy_n8n.sh | tr -d '\r' > deploy_n8n.sh && chmod +x deploy_n8n.sh && sudo bash deploy_n8n.sh
 
 # Make it executable
 chmod +x auto_install_n8n.sh
