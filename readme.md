@@ -58,7 +58,7 @@ Download the script, make it executable, and run it with `sudo`.
 
 ```bash
 # Download the script
-cd /tmp && wget -O auto_deploy_n8n.sh https://raw.githubusercontent.com/satriyabajuhitam/auto-n8n-complete/main/auto_deploy_n8n.sh
+cd /tmp && wget -O auto_install_n8n.sh https://raw.githubusercontent.com/satriyabajuhitam/auto-n8n-complete/main/auto_deploy_n8n.sh
 
 # Make it executable
 chmod +x auto_install_n8n.sh
