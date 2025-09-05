@@ -744,6 +744,21 @@ create_project_structure() {
     
     success "Directory structure created."
 }
+
+create_n8n_config_file() {
+    log "⚙️  Creating custom N8N config file (config.js) for proxy fix..."
+    
+    cat > "$INSTALL_DIR/config.js" << 'EOF'
+module.exports = {
+  // Memberitahu n8n untuk mempercayai header proxy yang dikirim oleh Caddy.
+  // Ini adalah pengganti dari variabel lingkungan N8N_TRUST_PROXY.
+  proxy: 'caddy',
+};
+EOF
+    
+    success "Custom config.js created successfully."
+}
+
 create_dockerfile() {
     log "🐳 Creating a stable Dockerfile for N8N..."
     
@@ -875,7 +890,7 @@ services:
       - NODE_ENV=production
       - WEBHOOK_URL=https://${DOMAIN}/
       - GENERIC_TIMEZONE=Asia/Jakarta
-      - N8N_TRUST_PROXY=caddy
+      # - N8N_TRUST_PROXY=caddy
       - N8N_METRICS=true
       - N8N_LOG_LEVEL=info
       - N8N_LOG_OUTPUT=console
@@ -1896,6 +1911,7 @@ main() {
     
     # Perform restore if requested
     perform_restore
+    create_n8n_config_file
     
     # Create configuration files
     create_dockerfile
