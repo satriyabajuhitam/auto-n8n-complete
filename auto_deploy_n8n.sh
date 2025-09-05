@@ -883,33 +883,33 @@ services:
     restart: unless-stopped
     ports:
       - "127.0.0.1:5678:5678"
-    environment:
-      - N8N_HOST=0.0.0.0
-      - N8N_PORT=5678
-      - N8N_PROTOCOL=https
-      - NODE_ENV=production
-      - WEBHOOK_URL=https://${DOMAIN}/
-      - GENERIC_TIMEZONE=Asia/Jakarta
-      # - N8N_TRUST_PROXY=caddy
-      - N8N_METRICS=true
-      - N8N_LOG_LEVEL=info
-      - N8N_LOG_OUTPUT=console
-      - N8N_USER_FOLDER=/home/node
-      - N8N_ENCRYPTION_KEY=\${N8N_ENCRYPTION_KEY:-$(openssl rand -hex 32)}
-      - DB_TYPE=sqlite
-      - DB_SQLITE_DATABASE=/home/node/.n8n/database.sqlite
-      - DB_SQLITE_POOL_SIZE=10
-      - N8N_BASIC_AUTH_ACTIVE=false
-      - N8N_RUNNERS_ENABLED=true
-      - N8N_DISABLE_PRODUCTION_MAIN_PROCESS=false
-      - EXECUTIONS_TIMEOUT=3600
-      - EXECUTIONS_TIMEOUT_MAX=7200
-      - N8N_EXECUTIONS_DATA_MAX_SIZE=500MB
-      - N8N_BINARY_DATA_MODE=filesystem
-      - N8N_BINARY_DATA_STORAGE=/files
-      - N8N_DEFAULT_BINARY_DATA_FILESYSTEM_DIRECTORY=/files
-      - N8N_DEFAULT_BINARY_DATA_TEMP_DIRECTORY=/files/temp
-      - NODE_FUNCTION_ALLOW_BUILTIN=child_process,path,fs,util,os
+environment:
+  - N8N_HOST=${DOMAIN}
+  - N8N_PORT=5678
+  - N8N_PROTOCOL=https
+  - NODE_ENV=production
+  - WEBHOOK_URL=https://${DOMAIN}/
+  - GENERIC_TIMEZONE=Asia/Jakarta
+  - N8N_SECURE_COOKIE=true
+  - N8N_METRICS=true
+  - N8N_LOG_LEVEL=info
+  - N8N_LOG_OUTPUT=console
+  - N8N_USER_FOLDER=/home/node
+  - N8N_ENCRYPTION_KEY=\${N8N_ENCRYPTION_KEY:-$(openssl rand -hex 32)}
+  - DB_TYPE=sqlite
+  - DB_SQLITE_DATABASE=/home/node/.n8n/database.sqlite
+  - DB_SQLITE_POOL_SIZE=10
+  - N8N_BASIC_AUTH_ACTIVE=false
+  - N8N_RUNNERS_ENABLED=true
+  - N8N_DISABLE_PRODUCTION_MAIN_PROCESS=false
+  - EXECUTIONS_TIMEOUT=3600
+  - EXECUTIONS_TIMEOUT_MAX=7200
+  - N8N_EXECUTIONS_DATA_MAX_SIZE=500MB
+  - N8N_BINARY_DATA_MODE=filesystem
+  - N8N_BINARY_DATA_STORAGE=/files
+  - N8N_DEFAULT_BINARY_DATA_FILESYSTEM_DIRECTORY=/files
+  - N8N_DEFAULT_BINARY_DATA_TEMP_DIRECTORY=/files/temp
+  - NODE_FUNCTION_ALLOW_BUILTIN=child_process,path,fs,util,os
     volumes:
       - ./files:/home/node/.n8n
       - ./files/youtube_content_anylystic:/data/youtube_content_anylystic
