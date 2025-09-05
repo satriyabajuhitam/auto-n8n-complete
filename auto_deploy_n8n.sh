@@ -871,7 +871,7 @@ services:
       - NODE_ENV=production
       - WEBHOOK_URL=https://${DOMAIN}/
       - GENERIC_TIMEZONE=Asia/Jakarta
-      - N8N_TRUST_PROXY=true
+      - N8N_TRUST_PROXY=caddy
       - N8N_METRICS=true
       - N8N_LOG_LEVEL=info
       - N8N_LOG_OUTPUT=console
