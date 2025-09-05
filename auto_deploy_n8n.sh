@@ -464,15 +464,17 @@ get_domain_input() {
     echo ""
     
     while true; do
-        read -p "🌐 Please enter your main domain for N8N (e.g., n8n.example.com): " DOMAIN
-        if [[ -n "$DOMAIN" && "$DOMAIN" =~ ^[a-zA-Z0-9][a-zA-Z0-9.-]*[a-zA-Z0-9]$ ]]; then
-            break
-        else
-            error "That doesn't look like a valid domain. Please try again."
-        fi
-    done
-    
-    info "N8N Domain: ${DOMAIN}"
+    read -p "🌐 Please enter your main domain for N8N (e.g., n8n.example.com): " DOMAIN
+    if [[ -n "$DOMAIN" && "$DOMAIN" =~ ^[a-zA-Z0-9][a-zA-Z0-9.-]*[a-zA-Z0-9]$ ]]; then
+        break
+    else
+        error "That doesn't look like a valid domain. Please try again."
+    fi
+done
+
+export DOMAIN
+
+info "N8N Domain: ${DOMAIN}"
 }
 
 get_cleanup_option() {
