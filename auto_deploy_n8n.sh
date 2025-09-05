@@ -784,7 +784,11 @@ RUN for i in 1 2 3; do \
         (echo "Retry $i failed, waiting..." && sleep 5); \
     done
 
-# Create directories and set permissions
+# === Menyalin file config.js untuk mengatasi masalah proxy ===
+COPY config.js /home/node/.n8n/
+# =============================================================
+
+# Create directories and set final permissions for ALL files (termasuk config.js)
 RUN mkdir -p /home/node/.n8n/nodes /data/youtube_content_anylystic && \
     chown -R 1000:1000 /home/node/.n8n /data && \
     chmod -R 755 /home/node/.n8n /data
