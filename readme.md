@@ -9,7 +9,6 @@ Automated installation script for **N8N Workflow Automation**, including:
   - **💾 Smart Backup System** with compression
   - **🔄 Auto-Update** with options
 
-
 ## ✨ Highlighted Features
 
 ### 🔧 N8N Core Features
@@ -22,9 +21,7 @@ Automated installation script for **N8N Workflow Automation**, including:
   - **📁 Volume mapping** for file persistence
   - **⚡ Swap memory** automatically based on RAM
 
-### 📰 News Content API (HOT Feature for 2025\!)
-
-> **NEW FEATURE 2025\!** 🎉
+### 📰 News Content API
 
   - **🚀 FastAPI** with the latest **Newspaper4k**
   - **🔐 Custom Bearer Token Authentication** for security
@@ -40,7 +37,7 @@ Automated installation script for **N8N Workflow Automation**, including:
   - `POST /extract-source` - Crawl multiple articles from a website
   - `POST /parse-feed` - Parse RSS feeds
 
-### 📱 Telegram Backup System (HOT Feature\!)
+### 📱 Telegram Backup System
 
   - **🔄 Automatic backup** of workflows & credentials every day at 2:00 AM
   - **📱 Sends backup file** via Telegram Bot (if \<20MB)
@@ -77,34 +74,34 @@ Automated installation script for **N8N Workflow Automation**, including:
 ### 1️⃣ One-Command Install (Recommended)
 
 ```bash
-cd /tmp && curl -sSL https://raw.githubusercontent.com/KalvinThien/install-n8n-ffmpeg/main/auto_cai_dat_n8n.sh | tr -d '\r' > install_n8n.sh && chmod +x install_n8n.sh && sudo bash install_n8n.sh
+cd /tmp && curl -sSL https://raw.githubusercontent.com/satriyabajuhitam/auto-n8n-complete/main/auto_deploy_n8n.sh | tr -d '\r' > install_n8n.sh && chmod +x install_n8n.sh && sudo bash install_n8n.sh
 ```
 
 ### 2️⃣ Or Download & Run
 
 ```bash
-wget https://raw.githubusercontent.com/KalvinThien/install-n8n-ffmpeg/main/auto_cai_dat_n8n.sh
-chmod +x auto_cai_dat_n8n.sh
-sudo ./auto_cai_dat_n8n.sh
+wget https://raw.githubusercontent.com/satriyabajuhitam/auto-n8n-complete/main/auto_deploy_n8n.sh
+chmod +x auto_deploy_n8n.sh
+sudo ./auto_deploy_n8n.sh
 ```
 
 ### 3️⃣ Clean Install (Deletes all old installations)
 
 ```bash
-sudo ./auto_cai_dat_n8n.sh --clean
+sudo ./auto_deploy_n8n.sh --clean
 ```
 
 ### 4️⃣ Advanced Options
 
 ```bash
 # Specify installation directory
-sudo ./auto_cai_dat_n8n.sh -d /custom/path
+sudo ./auto_deploy_n8n.sh -d /custom/path
 
 # Skip Docker installation (if already installed)
-sudo ./auto_cai_dat_n8n.sh -s
+sudo ./auto_deploy_n8n.sh -s
 
 # View full help
-./auto_cai_dat_n8n.sh -h
+./auto_deploy_n8n.sh -h
 ```
 
 ## 🔧 Interactive Installation Process
@@ -438,24 +435,24 @@ docker image prune -f
 ├── 🌐 Caddyfile                   # Reverse proxy + SSL config
 ├── 💾 backup-workflows.sh         # Auto backup script
 ├── 🧪 backup-manual.sh            # Manual backup test script
-├── 🔄 update-n8n.sh              # Auto update script
+├── 🔄 update-n8n.sh               # Auto update script
 ├── 🔍 troubleshoot.sh             # Diagnostic script (NEW!)
 ├── 📱 telegram_config.txt         # Telegram settings (if any)
-├── 🔑 news_api_token.txt         # News API token (if any)
+├── 🔑 news_api_token.txt          # News API token (if any)
 ├── 📁 files/                      # N8N data directory
-│   ├── backup_full/              # 💾 Backup storage (30 files)
-│   ├── temp/                     # 🗂️ Temporary files
-│   └── youtube_content_anylystic/ # 🎬 Video downloads
+│   ├── backup_full/                # 💾 Backup storage (30 files)
+│   ├── temp/                       # 🗂️ Temporary files
+│   └── youtube_content_anylystic/  # 🎬 Video downloads
 ├── 📰 news_api/                   # News API (if any)
 │   ├── Dockerfile
 │   ├── requirements.txt           # Python dependencies
-│   ├── main.py                   # FastAPI application
-│   └── start_news_api.sh         # Startup script
+│   ├── main.py                    # FastAPI application
+│   └── start_news_api.sh          # Startup script
 ├── 💾 database.sqlite             # N8N main database
 ├── 🔐 encryptionKey               # N8N encryption key
 └── 📋 logs/                       # Log files
-    ├── update.log                # Update logs
-    └── backup.log                # Backup logs
+    ├── update.log                 # Update logs
+    └── backup.log                 # Backup logs
 ```
 
 ## ⚡ Performance & Optimization
@@ -676,8 +673,4 @@ When reporting a bug, please include:
   - **🐳 Docker** - Containerization platform
   - **🌐 Caddy** - Web server with automatic HTTPS
 
------
-
-**🚀 Made with ❤️ by Nguyễn Ngọc Thiện - December 2024**
-
-> 💡 **Don't forget**: SUBSCRIBE to the [YouTube channel](https://www.youtube.com/@kalvinthiensocial?sub_confirmation=1) so you don't miss new videos\! 🔔
+---
