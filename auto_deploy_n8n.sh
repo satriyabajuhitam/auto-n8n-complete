@@ -34,7 +34,6 @@ TELEGRAM_BOT_TOKEN=""
 TELEGRAM_CHAT_ID=""
 RCLONE_REMOTE_NAME="gdrive_n8n"
 GDRIVE_BACKUP_FOLDER="n8n_backups"
-ENABLE_NEWS_API=false
 ENABLE_TELEGRAM=false
 ENABLE_GDRIVE_BACKUP=false
 ENABLE_AUTO_UPDATE=false
@@ -54,7 +53,7 @@ show_banner() {
     echo -e "${CYAN}╔══════════════════════════════════════════════════════════════════════════════╗${NC}"
     echo -e "${CYAN}║${WHITE}              🚀 AUTOMATIC N8N INSTALLATION SCRIPT  🚀          ${CYAN}║${NC}"
     echo -e "${CYAN}╠══════════════════════════════════════════════════════════════════════════════╣${NC}"
-    echo -e "${CYAN}║${WHITE} ✨ N8N + FFmpeg + yt-dlp + News API + Telegram/G-Drive Backup ${CYAN}║${NC}"
+    echo -e "${CYAN}║${WHITE} ✨ N8N + FFmpeg + yt-dlp + Telegram/G-Drive Backup ${CYAN}║${NC}"
     echo -e "${CYAN}║${WHITE} ✅ Fixed: Auto-update, Restore backup, Health monitoring                   ${CYAN}║${NC}"
     echo -e "${CYAN}║${WHITE} 🔄 Option to restore data immediately upon installation                              ${CYAN}║${NC}"
     echo -e "${CYAN}║${WHITE} 🐞 Fixed: SSL Rate Limit analysis, VN time display (GMT+7)              ${CYAN}║${NC}"
@@ -519,44 +518,6 @@ get_cleanup_option() {
     fi
 }
 
-get_news_api_config() {
-    echo ""
-    echo -e "${CYAN}╔══════════════════════════════════════════════════════════════════════════════╗${NC}"
-    echo -e "${CYAN}║${WHITE}                        📰 NEWS CONTENT API                                 ${CYAN}║${NC}"
-    echo -e "${CYAN}╚══════════════════════════════════════════════════════════════════════════════╝${NC}"
-    echo ""
-    echo -e "${WHITE}The News Content API allows you to:${NC}"
-    echo -e "  📰 Scrape article content from any website"
-    echo -e "  📡 Parse RSS feeds to get the latest news"
-    echo -e "  🔍 Search and automatically analyze content"
-    echo -e "  🤖 Integrate directly into N8N workflows"
-    echo ""
-    
-    read -p "📰 Do you want to install the News Content API? (Y/n): " -n 1 -r
-    echo
-    if [[ $REPLY =~ ^[Nn]$ ]]; then
-        ENABLE_NEWS_API=false
-        return 0
-    fi
-    
-    ENABLE_NEWS_API=true
-    
-    echo ""
-    echo -e "${YELLOW}🔐 Setting up Bearer Token for News API:${NC}"
-    echo -e "  • ${GREEN}LIMITS REMOVED!${NC} You can set any password."
-    echo -e "  • Supports letters, numbers, special characters, and any length."
-    echo -e "  • Will be used to authenticate API calls"
-    echo ""
-    
-    read -p "🔑 Enter your Bearer Token (leave blank to auto-generate a super strong token): " BEARER_TOKEN
-    if [[ -z "$BEARER_TOKEN" ]]; then
-        BEARER_TOKEN=$(openssl rand -base64 48)
-        info "Automatically generated a secure Bearer Token."
-    fi
-    
-    success "Successfully set up Bearer Token for News API"
-}
-
 get_backup_config() {
     if [[ "$LOCAL_MODE" == "true" ]]; then
         info "Local Mode: Skipping automatic backup configuration"
@@ -662,19 +623,16 @@ verify_dns() {
     
     # Check domain DNS
     local domain_ip=$(dig +short "$DOMAIN" A | tail -n1)
-    local api_domain_ip=$(dig +short "$API_DOMAIN" A | tail -n1)
     
     info "IP of ${DOMAIN}: ${domain_ip:-"not found"}"
-    info "IP of ${API_DOMAIN}: ${api_domain_ip:-"not found"}"
     
-    if [[ "$domain_ip" != "$server_ip" ]] || [[ "$api_domain_ip" != "$server_ip" ]]; then
+    if [[ "$domain_ip" != "$server_ip" ]]; then
         warning "DNS is not correctly pointed to the server!"
         echo ""
         echo -e "${YELLOW}Guide to DNS configuration:${NC}"
         echo -e "  1. Log in to your domain management page"
-        echo -e "  2. Create 2 A records:"
+        echo -e "  2. Create an A record:"
         echo -e "     • ${DOMAIN} → ${server_ip}"
-        echo -e "     • ${API_DOMAIN} → ${server_ip}"
         echo -e "  3. Wait 5-60 minutes for DNS propagation"
         echo ""
         
@@ -708,7 +666,7 @@ cleanup_old_installation() {
     fi
     
     # Remove Docker images
-    docker rmi n8n-custom-ffmpeg:latest news-api:latest 2>/dev/null || true
+    docker rmi n8n-custom-ffmpeg:latest 2>/dev/null || true
     
     # Remove installation directory
     rm -rf "$INSTALL_DIR"
@@ -802,10 +760,6 @@ create_project_structure() {
     mkdir -p files/youtube_content_anylystic
     mkdir -p logs
     
-    if [[ "$ENABLE_NEWS_API" == "true" ]]; then
-        mkdir -p news_api
-    fi
-    
     # Create log files
     touch logs/backup.log
     touch logs/update.log
@@ -873,442 +827,6 @@ EOF
     success "Successfully created Dockerfile for N8N (stable version)"
 }
 
-
-
-create_news_api() {
-    if [[ "$ENABLE_NEWS_API" != "true" ]]; then
-        return 0
-    fi
-    
-    log "📰 Creating News Content API..."
-    
-    # Create requirements.txt
-    cat > "$INSTALL_DIR/news_api/requirements.txt" << 'EOF'
-fastapi==0.104.1
-uvicorn[standard]==0.24.0
-newspaper4k==0.9.3
-user-agents==2.2.0
-pydantic==2.5.0
-python-multipart==0.0.6
-requests==2.31.0
-lxml==4.9.3
-Pillow==10.1.0
-nltk==3.8.1
-beautifulsoup4==4.12.2
-feedparser==6.0.10
-python-dateutil==2.8.2
-EOF
-    
-    # Create main.py
-    cat > "$INSTALL_DIR/news_api/main.py" << 'EOF'
-import os
-import random
-import logging
-from datetime import datetime
-from typing import List, Optional, Dict, Any
-import feedparser
-import requests
-from fastapi import FastAPI, HTTPException, Depends, Security
-from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import HTMLResponse
-from pydantic import BaseModel, HttpUrl, Field
-import newspaper
-from newspaper import Article, Source
-from user_agents import parse
-import nltk
-
-# Download required NLTK data
-try:
-    nltk.download('punkt', quiet=True)
-    nltk.download('stopwords', quiet=True)
-except:
-    pass
-
-# Configure logging
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
-
-# FastAPI app
-app = FastAPI(
-    title="News Content API",
-    description="Advanced News Content Extraction API with Newspaper4k",
-    version="2.0.0",
-    docs_url="/docs",
-    redoc_url="/redoc"
-)
-
-# CORS middleware
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-# Security
-security = HTTPBearer()
-NEWS_API_TOKEN = os.getenv("NEWS_API_TOKEN", "default_token")
-
-# Random User Agents
-USER_AGENTS = [
-    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-    "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-    "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0",
-    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:121.0) Gecko/20100101 Firefox/121.0",
-    "Mozilla/5.0 (X11; Linux x86_64; rv:121.0) Gecko/20100101 Firefox/121.0",
-    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Edge/120.0.0.0 Safari/537.36",
-    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2 Safari/605.1.15"
-]
-
-def get_random_user_agent() -> str:
-    return random.choice(USER_AGENTS)
-
-def verify_token(credentials: HTTPAuthorizationCredentials = Security(security)):
-    if credentials.credentials != NEWS_API_TOKEN:
-        raise HTTPException(
-            status_code=401,
-            detail="Invalid authentication token"
-        )
-    return credentials.credentials
-
-# Pydantic models
-class ArticleRequest(BaseModel):
-    url: HttpUrl
-    language: str = Field(default="en", description="Language code (en, vi, zh, etc.)")
-    extract_images: bool = Field(default=True, description="Extract images from article")
-    summarize: bool = Field(default=False, description="Generate article summary")
-
-class SourceRequest(BaseModel):
-    url: HttpUrl
-    max_articles: int = Field(default=10, ge=1, le=50, description="Maximum articles to extract")
-    language: str = Field(default="en", description="Language code")
-
-class FeedRequest(BaseModel):
-    url: HttpUrl
-    max_articles: int = Field(default=10, ge=1, le=50, description="Maximum articles to parse")
-
-class ArticleResponse(BaseModel):
-    title: str
-    content: str
-    summary: Optional[str] = None
-    authors: List[str]
-    publish_date: Optional[datetime] = None
-    images: List[str]
-    top_image: Optional[str] = None
-    keywords: List[str]
-    language: str
-    word_count: int
-    read_time_minutes: int
-    url: str
-
-class SourceResponse(BaseModel):
-    source_url: str
-    articles: List[ArticleResponse]
-    total_articles: int
-    categories: List[str]
-
-class FeedResponse(BaseModel):
-    feed_url: str
-    feed_title: str
-    articles: List[Dict[str, Any]]
-    total_articles: int
-
-# Helper functions
-def create_newspaper_config(language: str = "en") -> newspaper.Config:
-    config = newspaper.Config()
-    config.language = language
-    config.browser_user_agent = get_random_user_agent()
-    config.request_timeout = 30
-    config.number_threads = 1
-    config.thread_timeout_seconds = 30
-    config.ignored_content_types_defaults = {
-        'application/pdf', 'application/x-pdf', 'application/x-bzpdf',
-        'application/x-gzpdf', 'application/msword', 'doc', 'text/plain'
-    }
-    return config
-
-def extract_article_content(url: str, language: str = "en", extract_images: bool = True, summarize: bool = False) -> ArticleResponse:
-    try:
-        config = create_newspaper_config(language)
-        article = Article(url, config=config)
-        article.download()
-        article.parse()
-        keywords = []
-        summary = None
-        if article.text:
-            try:
-                article.nlp()
-                keywords = article.keywords[:10]
-                if summarize:
-                    summary = article.summary
-            except Exception as e:
-                logger.warning(f"NLP processing failed for {url}: {e}")
-        word_count = len(article.text.split()) if article.text else 0
-        read_time = max(1, round(word_count / 200))
-        images = []
-        if extract_images:
-            images = list(article.images)[:10]
-        return ArticleResponse(
-            title=article.title or "No title",
-            content=article.text or "No content",
-            summary=summary,
-            authors=article.authors,
-            publish_date=article.publish_date,
-            images=images,
-            top_image=article.top_image,
-            keywords=keywords,
-            language=language,
-            word_count=word_count,
-            read_time_minutes=read_time,
-            url=url
-        )
-    except Exception as e:
-        logger.error(f"Error extracting article {url}: {e}")
-        raise HTTPException(status_code=400, detail=f"Failed to extract article: {str(e)}")
-
-# API Routes
-@app.get("/", response_class=HTMLResponse)
-async def root():
-    html_content = f"""
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <title>News Content API</title>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <style>
-            body {{ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; margin: 0; padding: 20px; background: #f5f5f5; }}
-            .container {{ max-width: 880px; margin: 0 auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }}
-            h1 {{ color: #2c3e50; border-bottom: 3px solid #3498db; padding-bottom: 10px; }}
-            h2 {{ color: #34495e; margin-top: 30px; }}
-            .endpoint {{ background: #ecf0f1; padding: 15px; border-radius: 5px; margin: 10px 0; }}
-            .method {{ background: #3498db; color: white; padding: 3px 8px; border-radius: 3px; font-size: 12px; }}
-            .auth-info {{ background: #e74c3c; color: white; padding: 15px; border-radius: 5px; margin: 20px 0; }}
-            .token-change {{ background: #f39c12; color: white; padding: 15px; border-radius: 5px; margin: 20px 0; }}
-            code {{ background: #2c3e50; color: #ecf0f1; padding: 2px 5px; border-radius: 3px; }}
-            pre {{ background: #2c3e50; color: #ecf0f1; padding: 15px; border-radius: 5px; overflow-x: auto; }}
-            .feature {{ background: #27ae60; color: white; padding: 10px; border-radius: 5px; margin: 5px 0; }}
-            .cta {{ background: #8e44ad; color: white; padding: 15px; border-radius: 8px; margin: 15px 0; }}
-            a {{ color: #2c3e50; }}
-        </style>
-    </head>
-    <body>
-        <div class="container">
-            <div class="cta">
-                <strong>🎉 Hello from Satriya</strong><br>
-                📺 Please <a href=\"https://www.youtube.com/@satriyabajuhitam?sub_confirmation=1\" target=\"_blank\"><strong>subscribe to my YouTube channel</strong></a> to support me!<br>
-                🎵 n8n playlist: <a href=\"https://www.youtube.com/@satriyabajuhitam/playlists\" target=\"_blank\">Watch here</a> · 
-                👍 Facebook: <a href=\"https://www.facebook.com/satriyabajuhitam/\" target=\"_blank\">@satriyabajuhitam</a> · 
-                📱 Phone: <strong>08123456789</strong>
-            </div>
-            <h1>🚀 News Content API v2.0</h1>
-            <p>Advanced News Content Extraction API with <strong>Newspaper4k</strong> and <strong>Random User Agents</strong></p>
-            <div class="auth-info">
-                <h3>🔐 Authentication Required</h3>
-                <p>All API calls require a Bearer Token in the header:</p>
-                <code>Authorization: Bearer YOUR_TOKEN_HERE</code>
-                <p><strong>Note:</strong> The token was set during installation and is not shown here for security reasons.</p>
-            </div>
-            <div class="token-change">
-                <h3>🔧 Change Bearer Token</h3>
-                <p><strong>Method 1:</strong> One-liner command</p>
-                <pre>cd /home/n8n && sed -i 's/NEWS_API_TOKEN=.*/NEWS_API_TOKEN="NEW_TOKEN"/' docker-compose.yml && docker compose restart fastapi</pre>
-                <p><strong>Method 2:</strong> Edit the file directly</p>
-                <pre>nano /home/n8n/docker-compose.yml
-# Find the NEWS_API_TOKEN line and change it
-docker compose restart fastapi</pre>
-            </div>
-            <h2>✨ Features</h2>
-            <div class="feature">📰 Scrape article content from any website</div>
-            <div class="feature">📡 Parse RSS feeds to get the latest news</div>
-            <div class="feature">🔍 Search and automatically analyze content</div>
-            <div class="feature">🌍 Supports 80+ languages (Vietnamese, English, Chinese, Japanese...)</div>
-            <div class="feature">🎭 Random User Agents to avoid being blocked</div>
-            <div class="feature">🤖 Integrate directly into N8N workflows</div>
-            <h2>📖 API Endpoints</h2>
-            <div class="endpoint">
-                <span class="method">GET</span> <strong>/health</strong>
-                <p>Check API status</p>
-            </div>
-            <div class="endpoint">
-                <span class="method">POST</span> <strong>/extract-article</strong>
-                <p>Get article content from a URL</p>
-                <pre>{{"url": "https://example.com/article", "language": "vi", "extract_images": true, "summarize": true}}</pre>
-            </div>
-            <div class="endpoint">
-                <span class="method">POST</span> <strong>/extract-source</strong>
-                <p>Scrape multiple articles from a website</p>
-                <pre>{{"url": "https://dantri.com.vn", "max_articles": 10, "language": "vi"}}</pre>
-            </div>
-            <div class="endpoint">
-                <span class="method">POST</span> <strong>/parse-feed</strong>
-                <p>Parse RSS feeds</p>
-                <pre>{{"url": "https://dantri.com.vn/rss.xml", "max_articles": 10}}</pre>
-            </div>
-            <h2>🔗 Documentation</h2>
-            <p>
-                <a href="/docs" target="_blank">📚 Swagger UI</a> | 
-                <a href="/redoc" target="_blank">📖 ReDoc</a>
-            </p>
-            <h2>💻 cURL Example</h2>
-            <pre>curl -X POST "https://api.yourdomain.com/extract-article" \
- -H "Content-Type: application/json" \
- -H "Authorization: Bearer YOUR_TOKEN" \
- -d '{{"url": "https://dantri.com.vn/the-gioi.htm", "language": "vi"}}'</pre>
-            <hr style="margin: 30px 0;">
-            <p style="text-align: center; color: #7f8c8d;">
-                🚀 Powered by <strong>Newspaper4k</strong>
-            </p>
-        </div>
-    </body>
-    </html>
-    """
-    return html_content
-
-@app.get("/health")
-async def health_check():
-    return {
-        "status": "healthy",
-        "timestamp": datetime.now(),
-        "version": "2.0.0",
-        "features": [
-            "Article extraction",
-            "Source crawling",
-            "RSS feed parsing",
-            "Multi-language support",
-            "Random User Agents",
-            "Image extraction",
-            "Keyword extraction",
-            "Content summarization"
-        ]
-    }
-
-@app.post("/extract-article", response_model=ArticleResponse)
-async def extract_article(
-    request: ArticleRequest,
-    token: str = Depends(verify_token)
-):
-    logger.info(f"Extracting article: {request.url}")
-    return extract_article_content(
-        str(request.url),
-        request.language,
-        request.extract_images,
-        request.summarize
-    )
-
-@app.post("/extract-source", response_model=SourceResponse)
-async def extract_source(
-    request: SourceRequest,
-    token: str = Depends(verify_token)
-):
-    try:
-        logger.info(f"Extracting source: {request.url}")
-        config = create_newspaper_config(request.language)
-        source = Source(str(request.url), config=config)
-        source.build()
-        articles_to_process = source.articles[:request.max_articles]
-        extracted_articles = []
-        for article in articles_to_process:
-            try:
-                article_response = extract_article_content(
-                    article.url,
-                    request.language,
-                    extract_images=True,
-                    summarize=False
-                )
-                extracted_articles.append(article_response)
-            except Exception as e:
-                logger.warning(f"Failed to extract article {article.url}: {e}")
-                continue
-        return SourceResponse(
-            source_url=str(request.url),
-            articles=extracted_articles,
-            total_articles=len(extracted_articles),
-            categories=source.category_urls()[:10]
-        )
-    except Exception as e:
-        logger.error(f"Error extracting source {request.url}: {e}")
-        raise HTTPException(status_code=400, detail=f"Failed to extract source: {str(e)}")
-
-@app.post("/parse-feed", response_model=FeedResponse)
-async def parse_feed(
-    request: FeedRequest,
-    token: str = Depends(verify_token)
-):
-    try:
-        logger.info(f"Parsing feed: {request.url}")
-        headers = {'User-Agent': get_random_user_agent()}
-        feed = feedparser.parse(str(request.url), request_headers=headers)
-        if feed.bozo:
-            logger.warning(f"Feed parsing warning for {request.url}: {feed.bozo_exception}")
-        articles = []
-        entries_to_process = feed.entries[:request.max_articles]
-        for entry in entries_to_process:
-            article_data = {
-                "title": getattr(entry, 'title', 'No title'),
-                "link": getattr(entry, 'link', ''),
-                "description": getattr(entry, 'description', ''),
-                "published": getattr(entry, 'published', ''),
-                "author": getattr(entry, 'author', ''),
-                "tags": [tag.term for tag in getattr(entry, 'tags', [])],
-                "summary": getattr(entry, 'summary', '')
-            }
-            articles.append(article_data)
-        return FeedResponse(
-            feed_url=str(request.url),
-            feed_title=getattr(feed.feed, 'title', 'Unknown Feed'),
-            articles=articles,
-            total_articles=len(articles)
-        )
-    except Exception as e:
-        logger.error(f"Error parsing feed {request.url}: {e}")
-        raise HTTPException(status_code=400, detail=f"Failed to parse feed: {str(e)}")
-
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
-EOF
-    
-    # Create Dockerfile for News API
-    cat > "$INSTALL_DIR/news_api/Dockerfile" << 'EOF'
-FROM python:3.11-slim
-
-WORKDIR /app
-
-# Install system dependencies
-RUN apt-get update && apt-get install -y \
-    gcc \
-    g++ \
-    libxml2-dev \
-    libxslt-dev \
-    libjpeg-dev \
-    zlib1g-dev \
-    libpng-dev \
-    curl \
-    && rm -rf /var/lib/apt/lists/*
-
-# Copy requirements and install Python dependencies
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
-
-# Copy application code
-COPY . .
-
-# Health check
-HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
-    CMD curl -f http://localhost:8000/health || exit 1
-
-EXPOSE 8000
-
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "1"]
-EOF
-    
-    success "Successfully created News Content API"
-}
-
 create_docker_compose() {
     log "🐳 Creating docker-compose.yml..."
     
@@ -1360,23 +878,6 @@ services:
     networks:
       - n8n_network
 EOF
-
-        if [[ "$ENABLE_NEWS_API" == "true" ]]; then
-            cat >> "$INSTALL_DIR/docker-compose.yml" << EOF
-
-  fastapi:
-    build: ./news_api
-    container_name: news-api-container
-    restart: unless-stopped
-    ports:
-      - "8000:8000"
-    environment:
-      NEWS_API_TOKEN: ${BEARER_TOKEN}
-      PYTHONUNBUFFERED: "1"
-    networks:
-      - n8n_network
-EOF
-        fi
 
     else
         # Production Mode - With Caddy reverse proxy
@@ -1444,30 +945,6 @@ services:
       - n8n
 EOF
 
-        if [[ "$ENABLE_NEWS_API" == "true" ]]; then
-            cat >> "$INSTALL_DIR/docker-compose.yml" << EOF
-      - fastapi
-
-  fastapi:
-    build: ./news_api
-    container_name: news-api-container
-    restart: unless-stopped
-    ports:
-      - "127.0.0.1:8000:8000"
-    environment:
-      NEWS_API_TOKEN: ${BEARER_TOKEN}
-      PYTHONUNBUFFERED: "1"
-    networks:
-      - n8n_network
-EOF
-        fi
-
-        cat >> "$INSTALL_DIR/docker-compose.yml" << 'EOF'
-
-volumes:
-  caddy_data:
-  caddy_config:
-EOF
     fi
 
     cat >> "$INSTALL_DIR/docker-compose.yml" << 'EOF'
@@ -1521,40 +998,6 @@ ${DOMAIN} {
 }
 EOF
 
-    if [[ "$ENABLE_NEWS_API" == "true" ]]; then
-        cat >> "$INSTALL_DIR/Caddyfile" << EOF
-
-${API_DOMAIN} {
-    reverse_proxy fastapi:8000
-    
-    header {
-        Strict-Transport-Security "max-age=31536000; includeSubDomains"
-        X-Content-Type-Options "nosniff"
-        X-Frame-Options "DENY"
-        X-XSS-Protection "1; mode=block"
-        Access-Control-Allow-Origin "*"
-        Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
-        Access-Control-Allow-Headers "Content-Type, Authorization"
-    }
-    
-    encode gzip
-    
-    # Error pages
-    handle_errors {
-        @502 expression {http.error.status_code} == 502
-        handle @502 {
-            respond "News API service is starting up. Please wait a moment and refresh." 502
-        }
-    }
-    
-    log {
-        output file /var/log/caddy/api.log
-        format json
-    }
-}
-EOF
-    fi
-    
     success "Successfully created Caddyfile"
 }
 
@@ -1936,11 +1379,6 @@ if docker ps | grep -q "caddy-proxy"; then
     SERVICES_STATUS="$SERVICES_STATUS\n✅ Caddy: Running"
 fi
 
-if docker ps | grep -q "news-api-container"; then
-    log "✅ News API container is running"
-    SERVICES_STATUS="$SERVICES_STATUS\n✅ News API: Running"
-fi
-
 NEW_VERSION=$(docker exec n8n-container n8n --version 2>/dev/null || echo "unknown")
 
 HEALTH_STATUS=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:5678/healthz || echo "000")
@@ -2231,9 +1669,6 @@ build_and_deploy() {
     if [[ "$LOCAL_MODE" != "true" ]]; then
         services_to_check+=("caddy-proxy")
     fi
-    if [[ "$ENABLE_NEWS_API" == "true" ]]; then
-        services_to_check+=("news-api-container")
-    fi
 
     local all_healthy=false
     local max_retries=12 # 12 retries * 15 seconds = 180 seconds = 3 minutes
@@ -2386,14 +1821,13 @@ $DOCKER_COMPOSE ps
 echo ""
 
 echo -e "${BLUE}📍 4. Docker Images:${NC}"
-docker images | grep -E "(n8n|caddy|news-api)"
+docker images | grep -E "(n8n|caddy)"
 echo ""
 
 echo -e "${BLUE}📍 5. Network Status:${NC}"
 echo "• Port 80: $(netstat -tulpn 2>/dev/null | grep :80 | wc -l) connections"
 echo "• Port 443: $(netstat -tulpn 2>/dev/null | grep :443 | wc -l) connections"
 echo "• Port 5678: $(netstat -tulpn 2>/dev/null | grep :5678 | wc -l) connections"
-echo "• Port 8000: $(netstat -tulpn 2>/dev/null | grep :8000 | wc -l) connections"
 echo "• Docker Networks:"
 docker network ls | grep n8n
 echo ""
@@ -2485,20 +1919,8 @@ show_final_summary() {
     echo -e "${CYAN}🌐 ACCESS THE SERVICE:${NC}"
     if [[ "$LOCAL_MODE" == "true" ]]; then
         echo -e "  • N8N: ${WHITE}http://localhost:5678${NC}"
-        if [[ "$ENABLE_NEWS_API" == "true" ]]; then
-            echo -e "  • News API: ${WHITE}http://localhost:8000${NC}"
-            echo -e "  • API Docs: ${WHITE}http://localhost:8000/docs${NC}"
-        fi
     else
         echo -e "  • N8N: ${WHITE}https://${DOMAIN}${NC}"
-        if [[ "$ENABLE_NEWS_API" == "true" ]]; then
-            echo -e "  • News API: ${WHITE}https://${API_DOMAIN}${NC}"
-            echo -e "  • API Docs: ${WHITE}https://${API_DOMAIN}/docs${NC}"
-        fi
-    fi
-    
-    if [[ "$ENABLE_NEWS_API" == "true" ]]; then
-        echo -e "  • Bearer Token: ${YELLOW}Has been set (not shown for security)${NC}"
     fi
     
     echo ""
@@ -2520,12 +1942,6 @@ show_final_summary() {
     fi
     echo -e "  • Backup location: ${WHITE}${INSTALL_DIR}/files/backup_full/${NC}"
     echo ""
-    
-    if [[ "$ENABLE_NEWS_API" == "true" ]]; then
-        echo -e "${CYAN}🔧 CHANGE BEARER TOKEN:${NC}"
-        echo -e "  ${WHITE}cd /home/n8n && sed -i 's/NEWS_API_TOKEN=.*/NEWS_API_TOKEN=\"NEW_TOKEN\"/' docker-compose.yml && $DOCKER_COMPOSE restart fastapi${NC}"
-        echo ""
-    fi
     
     echo -e "${CYAN}📋 USEFUL COMMANDS:${NC}"
     echo -e "  • Check logs: ${WHITE}cd /home/n8n && $DOCKER_COMPOSE logs -f${NC}"
@@ -2562,7 +1978,6 @@ main() {
     get_installation_mode
     get_domain_input
     get_cleanup_option
-    get_news_api_config
     get_backup_config
     get_auto_update_config
     
@@ -2583,7 +1998,6 @@ main() {
     
     # Create configuration files
     create_dockerfile
-    create_news_api
     create_docker_compose
     create_caddyfile
     
