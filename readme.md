@@ -3,11 +3,12 @@
 Automated installation script for **N8N Workflow Automation**, including:
 
   - **🤖 N8N** with FFmpeg, yt-dlp, Puppeteer
-  - **📰 News Content API** (FastAPI + Newspaper4k)
   - **📱 Daily automated Telegram Backup**
   - **🔒 Automatic SSL Certificate** with Caddy
   - **💾 Smart Backup System** with compression
   - **🔄 Auto-Update** with options
+
+---
 
 ## ✨ Highlighted Features
 
@@ -21,29 +22,15 @@ Automated installation script for **N8N Workflow Automation**, including:
   - **📁 Volume mapping** for file persistence
   - **⚡ Swap memory** automatically based on RAM
 
-### 📰 News Content API
-
-  - **🚀 FastAPI** with the latest **Newspaper4k**
-  - **🔐 Custom Bearer Token Authentication** for security
-  - **🌐 Separate Subdomain**: `api.yourdomain.com`
-  - **📱 Responsive UI** with a 2025 design
-  - **📚 Interactive Documentation** (Swagger + ReDoc)
-  - **🌍 Multi-language** (Vietnamese, English, Chinese, Japanese...)
-
-**API Endpoints:**
-
-  - `GET /health` - Check API status
-  - `POST /extract-article` - Get article content from URL
-  - `POST /extract-source` - Crawl multiple articles from a website
-  - `POST /parse-feed` - Parse RSS feeds
-
 ### 📱 Telegram Backup System
 
   - **🔄 Automatic backup** of workflows & credentials every day at 2:00 AM
-  - **📱 Sends backup file** via Telegram Bot (if \<20MB)
+  - **📱 Sends backup file** via Telegram Bot (if <20MB)
   - **📊 Real-time notifications** on backup status
   - **🗂️ Automatically keeps the last 30 backups**
   - **🧪 Test manual backup** for verification
+
+---
 
 ### 💾 Smart Backup System
 
@@ -54,12 +41,16 @@ Automated installation script for **N8N Workflow Automation**, including:
   - **🧹 Auto cleanup** of old backups
   - **📋 Detailed logging** of all activities
 
+---
+
 ## 🖥️ Supported Environments
 
   - ✅ **Ubuntu VPS/Server** (Recommended)
   - ✅ **Ubuntu on Windows WSL2**
   - ✅ **Ubuntu Docker Environment**
   - ✅ **Auto-detect** and handle the environment
+
+---
 
 ## 📋 System Requirements
 
@@ -69,13 +60,15 @@ Automated installation script for **N8N Workflow Automation**, including:
   - **Network**: Domain pointed to the server IP
   - **Access**: Root/sudo permissions
 
+---
+
 ## 🚀 Super Fast Installation
 
 ### 1️⃣ One-Command Install (Recommended)
 
 ```bash
 cd /tmp && curl -sSL https://raw.githubusercontent.com/satriyabajuhitam/auto-n8n-complete/main/auto_deploy_n8n.sh | tr -d '\r' > install_n8n.sh && chmod +x install_n8n.sh && sudo bash install_n8n.sh
-```
+````
 
 ### 2️⃣ Or Download & Run
 
@@ -104,6 +97,8 @@ sudo ./auto_deploy_n8n.sh -s
 ./auto_deploy_n8n.sh -h
 ```
 
+-----
+
 ## 🔧 Interactive Installation Process
 
 The script will guide you through each step:
@@ -111,151 +106,14 @@ The script will guide you through each step:
 1.  **🔄 Setup Swap** - Automatically calculates and sets up appropriate swap space
 2.  **🌐 Enter Domain** - Main domain for N8N
 3.  **🗑️ Cleanup Option** - Option to delete old installations (if any)
-4.  **📰 News API Setup** - Do you want to install the News Content API?
-5.  **🔐 Bearer Token** - Set a secure Bearer Token password
-6.  **📱 Telegram Config** - Do you want to back up via Telegram?
-7.  **🔄 Auto-Update** - Do you want to enable automatic updates?
-8.  **✅ DNS Verification** - Checks if the domain is pointed correctly
-9.  **🐳 Docker Installation** - Installs Docker & dependencies
-10. **🏗️ Build & Deploy** - Builds images and starts containers
-11. **🔒 SSL Setup** - Automatically issues an SSL certificate
+4.  **📱 Telegram Config** - Do you want to back up via Telegram?
+5.  **🔄 Auto-Update** - Do you want to enable automatic updates?
+6.  **✅ DNS Verification** - Checks if the domain is pointed correctly
+7.  **🐳 Docker Installation** - Installs Docker & dependencies
+8.  **🏗️ Build & Deploy** - Builds images and starts containers
+9.  **🔒 SSL Setup** - Automatically issues an SSL certificate
 
-## 📰 News Content API - SUPER HOT FEATURE 2025\!
-
-### 🎯 Introduction
-
-The News Content API is built with the latest versions of **FastAPI** and **Newspaper4k**, helping you:
-
-  - **📰 Scrape content** from any website article
-  - **📡 Parse RSS feeds** to get the latest news
-  - **🔍 Search** and analyze content automatically
-  - **🤖 Integrate** directly into N8N workflows
-
-### 🔑 Authentication
-
-All API calls require a **custom Bearer Token**:
-
-```bash
-Authorization: Bearer YOUR_CUSTOM_TOKEN_HERE
-```
-
-> **🔐 Security:** The script will ask you to set your own Bearer Token (at least 20 characters) to ensure maximum security\!
-
-### 📖 API Documentation
-
-After installation, access:
-
-  - **🏠 Homepage**: `https://api.yourdomain.com/`
-  - **📚 Swagger UI**: `https://api.yourdomain.com/docs`
-  - **📖 ReDoc**: `https://api.yourdomain.com/redoc`
-
-### 💻 Usage Example with cURL
-
-**1. 🩺 Check API:**
-
-```bash
-curl -X GET "https://api.yourdomain.com/health" \
-     -H "Authorization: Bearer YOUR_CUSTOM_TOKEN"
-```
-
-**2. 📰 Get article content:**
-
-```bash
-curl -X POST "https://api.yourdomain.com/extract-article" \
-     -H "Content-Type: application/json" \
-     -H "Authorization: Bearer YOUR_CUSTOM_TOKEN" \
-     -d '{
-       "url": "https://dantri.com.vn/the-gioi.htm",
-       "language": "vi",
-       "extract_images": true,
-       "summarize": true
-     }'
-```
-
-**3. 🌐 Scrape multiple articles from a website:**
-
-```bash
-curl -X POST "https://api.yourdomain.com/extract-source" \
-     -H "Content-Type: application/json" \
-     -H "Authorization: Bearer YOUR_CUSTOM_TOKEN" \
-     -d '{
-       "url": "https://dantri.com.vn",
-       "max_articles": 10,
-       "language": "vi"
-     }'
-```
-
-**4. 📡 Parse RSS Feed:**
-
-```bash
-curl -X POST "https://api.yourdomain.com/parse-feed" \
-     -H "Content-Type: application/json" \
-     -H "Authorization: Bearer YOUR_CUSTOM_TOKEN" \
-     -d '{
-       "url": "https://dantri.com.vn/rss.xml",
-       "max_articles": 10
-     }'
-```
-
-### 🔧 Change Bearer Token {\#change-token}
-
-**Method 1: Via Docker Environment**
-
-```bash
-cd /home/n8n
-sed -i 's/NEWS_API_TOKEN=.*/NEWS_API_TOKEN=NEW_TOKEN_HERE/' docker-compose.yml
-docker-compose restart fastapi
-```
-
-**Method 2: Edit directly**
-
-```bash
-nano /home/n8n/docker-compose.yml
-# Find the NEWS_API_TOKEN line and change it
-docker-compose restart fastapi
-```
-
-**Method 3: One-liner command**
-
-```bash
-cd /home/n8n && sed -i 's/NEWS_API_TOKEN=.*/NEWS_API_TOKEN="YOUR_NEW_TOKEN"/' docker-compose.yml && docker-compose restart fastapi
-```
-
-### 🤖 Usage in N8N Workflows
-
-**1. Create an HTTP Request Node:**
-
-  - **Method**: POST
-  - **URL**: `https://api.yourdomain.com/extract-article`
-  - **Authentication**: Header Auth
-      - **Name**: `Authorization`
-      - **Value**: `Bearer YOUR_CUSTOM_TOKEN`
-
-**2. Request Body:**
-
-```json
-{
-  "url": "{{ $json.article_url }}",
-  "language": "vi",
-  "extract_images": true,
-  "summarize": false
-}
-```
-
-**3. The response will contain:**
-
-```json
-{
-  "title": "Article Title",
-  "content": "Full content...",
-  "summary": "Article summary",
-  "authors": ["Author"],
-  "publish_date": "2024-12-27T10:00:00Z",
-  "images": ["url1.jpg", "url2.jpg"],
-  "word_count": 500,
-  "read_time_minutes": 3
-}
-```
+-----
 
 ## 📱 Telegram Backup System
 
@@ -298,6 +156,8 @@ curl -X POST "https://api.telegram.org/bot<BOT_TOKEN>/sendMessage" \
   - **📦 File Transfer**: Auto-sends the backup file (if \<20MB)
   - **📊 Statistics**: Number of workflows, size, time
   - **🗂️ Retention**: Keeps the last 30 backups
+
+-----
 
 ## 💾 Backup & Restore System
 
@@ -369,6 +229,8 @@ cp credentials/encryptionKey /home/n8n/
 cd /home/n8n && docker-compose up -d
 ```
 
+-----
+
 ## 🛠️ System Management
 
 ### 🔧 Basic Commands
@@ -383,7 +245,6 @@ cd /home/n8n && docker-compose logs -f
 # Restart individual services
 cd /home/n8n && docker-compose restart n8n
 cd /home/n8n && docker-compose restart caddy
-cd /home/n8n && docker-compose restart fastapi  # If you have News API
 
 # Rebuild everything
 cd /home/n8n && docker-compose down && docker-compose up -d --build
@@ -401,7 +262,6 @@ docker ps --filter "name=n8n"
 # View detailed logs
 cd /home/n8n && docker-compose logs n8n
 cd /home/n8n && docker-compose logs caddy
-cd /home/n8n && docker-compose logs fastapi  # News API
 
 # Check disk usage
 df -h
@@ -426,6 +286,8 @@ docker system prune -f
 docker image prune -f
 ```
 
+-----
+
 ## 📂 Complete Directory Structure
 
 ```
@@ -438,22 +300,18 @@ docker image prune -f
 ├── 🔄 update-n8n.sh               # Auto update script
 ├── 🔍 troubleshoot.sh             # Diagnostic script (NEW!)
 ├── 📱 telegram_config.txt         # Telegram settings (if any)
-├── 🔑 news_api_token.txt          # News API token (if any)
 ├── 📁 files/                      # N8N data directory
 │   ├── backup_full/                # 💾 Backup storage (30 files)
 │   ├── temp/                       # 🗂️ Temporary files
 │   └── youtube_content_anylystic/  # 🎬 Video downloads
-├── 📰 news_api/                   # News API (if any)
-│   ├── Dockerfile
-│   ├── requirements.txt           # Python dependencies
-│   ├── main.py                    # FastAPI application
-│   └── start_news_api.sh          # Startup script
 ├── 💾 database.sqlite             # N8N main database
 ├── 🔐 encryptionKey               # N8N encryption key
 └── 📋 logs/                       # Log files
     ├── update.log                 # Update logs
     └── backup.log                 # Backup logs
 ```
+
+-----
 
 ## ⚡ Performance & Optimization
 
@@ -495,6 +353,8 @@ nano /home/n8n/docker-compose.yml
 # N8N_EXECUTIONS_DATA_MAX_SIZE=500MB
 # N8N_EXECUTIONS_TIMEOUT=3600
 ```
+
+-----
 
 ## 🐛 Troubleshooting Guide
 
@@ -542,21 +402,7 @@ sudo netstat -tulpn | grep :80
 sudo netstat -tulpn | grep :443
 ```
 
-**4. 📰 News API authentication failed**
-
-```bash
-# Check the token
-grep NEWS_API_TOKEN /home/n8n/docker-compose.yml
-
-# Test API health
-curl -X GET "https://api.yourdomain.com/health" \
-     -H "Authorization: Bearer YOUR_TOKEN"
-
-# Restart News API service
-cd /home/n8n && docker-compose restart fastapi
-```
-
-**5. 🔒 SSL Certificate issues**
+**4. 🔒 SSL Certificate issues**
 
 ```bash
 # View Caddy logs
@@ -569,7 +415,7 @@ docker-compose restart caddy
 curl -I https://yourdomain.com
 ```
 
-**6. 📱 Telegram backup not working**
+**5. 📱 Telegram backup not working**
 
 ```bash
 # Test Telegram Bot
@@ -584,7 +430,7 @@ curl -X POST "https://api.telegram.org/bot<BOT_TOKEN>/sendMessage" \
 cat /home/n8n/telegram_config.txt
 ```
 
-**7. 💾 Backup failed**
+**6. 💾 Backup failed**
 
 ```bash
 # Run manual backup to debug
@@ -629,11 +475,12 @@ cd /home/n8n && docker-compose up -d
 cd /home/n8n && docker-compose ps
 
 # Service-specific checks
-curl -I https://yourdomain.com                    # N8N
-curl -I https://api.yourdomain.com/health        # News API
+curl -I https://yourdomain.com                   # N8N
 systemctl status docker                          # Docker
-systemctl status cron                           # Cron jobs
+systemctl status cron                            # Cron jobs
 ```
+
+-----
 
 ## 🌟 Features Roadmap 2025
 
@@ -645,7 +492,6 @@ systemctl status cron                           # Cron jobs
   - [ ] **🛒 Plugin marketplace** integration
   - [ ] **🔔 Advanced notifications** (Discord, Slack, Email)
   - [ ] **🧠 AI content** analysis integration
-
 
 ### 🔧 Contributing
 
@@ -664,13 +510,8 @@ When reporting a bug, please include:
   - **📋 Error logs** from `docker-compose logs`
   - **🔧 Steps to reproduce**
 
-
 **🙏 Credits**:
 
   - **N8N Team** - Workflow automation platform
-  - **📰 Newspaper4k** - Python article extraction
-  - **🚀 FastAPI** - Modern Python web framework
   - **🐳 Docker** - Containerization platform
   - **🌐 Caddy** - Web server with automatic HTTPS
-
----
