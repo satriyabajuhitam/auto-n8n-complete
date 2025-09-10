@@ -923,6 +923,7 @@ services:
       N8N_RUNNERS_ENABLED: "true"
       N8N_BLOCK_ENV_ACCESS_IN_NODE: "false"
       N8N_TRUST_PROXY_HEADER: "X-Forwarded-For"
+      N8N_SECURE_COOKIE: "true"
     volumes:
       - ./files:/home/node/.n8n
       - ./files/youtube_content_anylystic:/data/youtube_content_anylystic
