@@ -943,16 +943,16 @@ services:
       - n8n_network
     depends_on:
       - n8n
-EOF
 
-    fi
-
-    cat >> "$INSTALL_DIR/docker-compose.yml" << 'EOF'
+volumes:
+  caddy_data:
+  caddy_config:
 
 networks:
   n8n_network:
     driver: bridge
 EOF
+    fi
     
     success "Successfully created docker-compose.yml"
 }
