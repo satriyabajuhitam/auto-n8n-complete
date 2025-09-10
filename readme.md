@@ -56,10 +56,10 @@ Automated installation script for **N8N Workflow Automation**, including:
 
 ## 🖥️ Supported Environments
 
-✅ **Ubuntu VPS/Server** (Recommended)
-✅ **Ubuntu on Windows WSL2**
-✅ **Ubuntu Docker Environment**
-✅ **Auto-detect** and handle the environment
+  - ✅ **Ubuntu VPS/Server** (Recommended)
+  - ✅ **Ubuntu on Windows WSL2**
+  - ✅ **Ubuntu Docker Environment**
+  - ✅ **Auto-detect** and handle the environment
 
 ## 📋 System Requirements
 
